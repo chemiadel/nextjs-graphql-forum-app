@@ -1,0 +1,44 @@
+{
+  "name": "nextjs-community",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "analyze": "cross-env ANALYZE=true next build && next start",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@headlessui/react": "^1.4.1",
+    "@next/bundle-analyzer": "^11.1.2",
+    "@tiptap/react": "^2.0.0-beta.74",
+    "@tiptap/starter-kit": "^2.0.0-beta.113",
+    "apollo-server": "^3.3.0",
+    "apollo-server-micro": "^2.3.3",
+    "cross-env": "^7.0.3",
+    "easymde": "^2.15.0",
+    "firebase": "^8.9.1",
+    "firebase-admin": "^9.11.1",
+    "graphql": "^15.6.0",
+    "micro": "^9.3.4",
+    "nanoid": "^3.1.28",
+    "next": "11.1.2",
+    "nookies": "^2.5.2",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-hook-form": "^7.16.0",
+    "react-simplemde-editor": "^5.0.1",
+    "slug": "^5.1.0",
+    "swr": "^1.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "17.0.20",
+    "autoprefixer": "^10.3.4",
+    "eslint": "7.32.0",
+    "eslint-config-next": "11.1.2",
+    "postcss": "^8.3.6",
+    "tailwindcss": "^2.2.15",
+    "typescript": "4.4.2"
+  }
+}
