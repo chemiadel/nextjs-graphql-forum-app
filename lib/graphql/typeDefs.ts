@@ -69,14 +69,24 @@ const typeDefs =gql`
         photoURL: String
         bio: String
         posts: [Post]
+        comments: [Comment]
         savedPosts : [Post]
         likedPosts : [Post]
       }
-      
+#Comment
+      type Comment {
+        id: ID!
+        created: Date
+        uid: String
+        comment: String
+        user: User
+      }
+
 #QUERY
       type Query {
         Me : User
         Posts (page: Int, tags: String) : [Post]
+        Comments ( pid: String! ) : [Comment]
         Post (nid: String!, slug:String!) : Post
         User (username: String!): User
         checkUsername ( username: String! ): Boolean
@@ -84,11 +94,13 @@ const typeDefs =gql`
         Like ( pid: String! ): Boolean
         Save ( pid: String! ): Boolean
         Follow ( to_uid: String! ): Boolean
-
       }
+
 #MUTATION
       type Mutation {
         addPost( input : inputPost! ) : Post
+        addComment ( pid:String!, comment: String! ) : Comment
+        deleteComment (commentId: String!) : Boolean
         editUser( input: inputUser! ) : User
 
         toggleLike ( pid: String! ) : Boolean

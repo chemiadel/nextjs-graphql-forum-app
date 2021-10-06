@@ -8,13 +8,13 @@ export default function Menu({src} : any){
     const wrapperRef = useRef(null);
     useOutsideAlerter(wrapperRef, setToggle);
 
-    return <div className="relative">
+    return <div className="relative lg:mx-2">
       <button
         className="flex items-center"
         onClick={()=>setToggle(!toggle)} 
       >
         <img
-          className="w-12 h-12 p-1 mx-2 rounded-full object-cover"
+          className="mx-auto w-12 h-12 p-1 rounded-full object-cover"
           src={src}
           alt="Avatar"
         />

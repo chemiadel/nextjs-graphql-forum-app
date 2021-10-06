@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import Head from 'next/head'
-import TopUsersCard from '../cards/topusers'
-import Tags from '../cards/history'
+import Tags from '../cards/toptags'
 
 function HOC ( {children, index } : any ) {
 

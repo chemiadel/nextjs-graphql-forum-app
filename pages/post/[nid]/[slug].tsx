@@ -5,6 +5,7 @@ import fetcher from '../../../lib/fetcher'
 import Link from 'next/link'
 import Like from '../../../components/buttons/like'
 import Save from '../../../components/buttons/save'
+import Comment from '../../../components/cards/comments'
 import timeago from '../../../lib/timeago'
 
 import { ParsedUrlQuery } from 'querystring';
@@ -72,6 +73,17 @@ const Home: NextPage = ({data : {Post : data}}:any) => {
               {timeago.ago(new Date(data.created._seconds * 1000))}
             </h2>
         </div>
+        <div>
+        <button className={
+          `inline-flex items-center mx-1 p-1 h-10 w-10 rounded-full text-base
+          bg-gray-50
+          border border-gray-300
+          focus:outline-none hover:bg-gray-100`}>
+            <svg xmlns="http://www.w3.org/2000/svg" className="m-auto h-6 w-4" fill={"none"} viewBox="0 0 24 24" stroke={"currentColor"}>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+        </svg>
+        </button>
+        </div>
         <Save pid={data.id} init={data.save}/>
         <Like pid={data.id} init={data.like} />
         </div>
@@ -86,7 +98,10 @@ const Home: NextPage = ({data : {Post : data}}:any) => {
 
           </div>
         <p className="leading-relaxed text-base p-4 pt-6"> { data.content.data} </p>
+
       </div>
+      <Comment pid={data.id}/>
+
     </div>
     </div>
 }

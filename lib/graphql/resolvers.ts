@@ -31,6 +31,28 @@ const resolvers = {
     
             return data
         },
+        Comments : async (parent: any, args: any, {db} : any) => {
+            let postsRef = db.collection('comments')
+            let snapshot = await postsRef
+            .where('pid','==',args.pid)
+            .get()
+            
+            if (snapshot.empty) {
+            console.log('No matching documents.');
+            return []
+            }  
+            
+            var data : any =[]
+            snapshot.forEach((doc: any) => {
+                // console.log(doc.id, '=>', doc.data());
+                data.push({
+                    id:doc.id,
+                    ...doc.data()
+                })
+            });
+    
+            return data
+        },
         Post: async (parent: any, args: any, {db} : any) => {
             let postsRef = db.collection('posts')
             let snapshot = await postsRef
@@ -150,6 +172,34 @@ const resolvers = {
             })
     
             return { id: result.id }
+        },
+        addComment: async (parent: any, args: any, context : any) => {
+            const session= context.session
+            if(!session) return null
+
+            const collection = context.db.collection('comments');
+            const result=await collection.add({
+                uid: session.uid,
+                created: new Date(),
+                pid: args.pid,
+                comment: args.comment
+            })
+    
+            return { id: result.id }
+        },
+        deleteComment: async (parent: any, args: any, context : any) => {
+            const session = context.session
+            if(!session) return false
+            
+            console.log('commentId', args.commentId)
+
+            return await context.db.collection("comments").doc(args.commentId).delete().then(() => {
+                return true
+            }).catch((error:any) => {
+                console.log('deleteComment.Error', error)
+                return false
+            })
+
         },
         editUser : async (parent: any, args: any, context : any) => {
                 const session = context.session
@@ -324,6 +374,20 @@ const resolvers = {
     Me : {
         posts : async (parent: any, args: any, {db} : any) => {
 
+        },
+    },
+    Comment : {
+        user : async (parent: any, args: any, {db, admin} : any) => {
+            
+            return admin
+            .auth()
+            .getUser(parent.uid)
+            .then((userRecord: any) => (
+                // console.log('userRecord',userRecord),
+                {...userRecord, username: userRecord.customClaims.username}) 
+                )
+            .catch((error: any) => console.log('res.POST.user',error ));
+    
         },
     }
 };
