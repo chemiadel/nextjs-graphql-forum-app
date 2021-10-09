@@ -18,18 +18,11 @@ type FormValues = {
 
 const Home: NextPage = () => {
   const { authUser, loading} = useAuth()
-
   const { register, setValue, control, handleSubmit, formState: { errors } } = useForm();
-
 
   const router=useRouter()
 
-  if(loading) return <h1>Loading...</h1>
-
-  if(!authUser) return <h1>U need to login</h1>
-
   function onSubmit({title,tags,published,content} : FormValues){
-    
     let payload={ 
       title,tags,published,
       content:{

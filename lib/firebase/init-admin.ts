@@ -14,9 +14,6 @@ const serviceAccount = {
   "client_x509_cert_url": process.env.client_x509_cert_url
 } as admin.ServiceAccount
 
-console.log(serviceAccount)
-
-
 if(!admin.apps.length){
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)

@@ -12,7 +12,7 @@ const Save = ({pid, init} : {pid: string, init: boolean | null}) => {
 
     return <button onClick={toggleSave} className={
       `inline-flex items-center h-10 w-10 rounded-full text-base
-      bg-gray-50 
+      ${value?"bg-gray-100":"bg-gray-50"} 
       border border-gray-300
       focus:outline-none hover:bg-gray-100`}>
     <svg xmlns="http://www.w3.org/2000/svg" className="m-auto h-6 w-4" fill={value?"currentColor":"none"} viewBox="0 0 24 24" stroke="currentColor">

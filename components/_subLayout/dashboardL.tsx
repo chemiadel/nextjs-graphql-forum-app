@@ -11,10 +11,10 @@ function HOC ( {children, index } : any ) {
       <main>
       <div className="text-gray-600 body-font md:mx-16 lg:mx-36">
             <div className="lg:px-5 pb-5 mx-auto flex flex-wrap flex-col   ">
-                <div className="flex flex-row content-center mb-4 p-4 border-b border-gray-200">
+                <div className="flex flex-row content-center mb-4 p-4 pt-2 border-b border-gray-200">
                     <h1 className="text-3xl leading-6 font-bold">Dashboard</h1>
                   </div>
-                <div className="flex flex-wrap border-b-2 ">
+                <div className="flex flex-wrap border-b ">
                   
                     <Link href={`/dashboard/overview`} passHref>
                     <a className={`cursor-pointer sm:px-6 py-3 w-1/3 sm:w-auto justify-center sm:justify-start border-2 border-b-0 title-font font-medium  inline-flex items-center leading-none ${index===0 ? "bg-gray-100 border-2 border-green-500 text-green-500 tracking-wider rounded-t":""}`}>

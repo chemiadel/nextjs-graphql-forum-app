@@ -13,7 +13,7 @@ export default function Layout({children} : Props){
         <div className="   ">
             <Header />
         </div>
-        <div className="flex-grow sm:py-6 ">
+        <div className="flex-grow sm:py-2 ">
             {children}
         </div>
         <Footer />

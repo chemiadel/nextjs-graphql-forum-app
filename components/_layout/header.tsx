@@ -15,16 +15,16 @@ export default function Header(props : any){
       </a>
       </Link>
 
-      <div className=" md:block w-3/5">
+      <div className=" md:block w-4/5">
                     <input type="text" className=" w-full py-3 pl-6 pr-4 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" placeholder="Search" />
       </div>
      
       {loading ? null :
-      <div className="w-2/5 flex flex-row-reverse space-x-2" >
+      <div className="w-2/6 flex flex-row-reverse space-x-2" >
         
         { authUser? <Menu src={authUser?.claims?.picture} /> : null}
-        <Link href={ authUser ? "/post/create" : "/signin" } prefetch={false}>
-        <button className="mx-auto my-1 px-4 py-1 rounded-md text-lg font-medium border-b-2 focus:outline-none focus:ring transition text-white bg-gray-500 border-gray-800 hover:bg-gray-600 active:bg-green-700 focus:ring-gray-300" type="submit">
+        <Link href={ authUser ? "/post/create" : "/login" } prefetch={false}>
+        <button className="mx-auto my-1 px-4 py-1 rounded-md text-lg font-medium border-b-2 focus:outline-none focus:ring transition text-white bg-gray-600 border-gray-800 hover:bg-gray-700 active:bg-green-800 focus:ring-gray-300" type="submit">
             {!authUser? "Join" : "Post"}
         </button>
         </Link>

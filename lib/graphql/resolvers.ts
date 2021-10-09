@@ -7,6 +7,7 @@ const nanoid = customAlphabet('1234567890', 6)
 const resolvers = {
     Query : {
         Posts: async (parent: any, args: any, {db} : any) => {
+
             let postsRef = db.collection('posts')
             let snapshot = await postsRef
             .where('published','==',true)
@@ -53,12 +54,11 @@ const resolvers = {
     
             return data
         },
-        Post: async (parent: any, args: any, {db} : any) => {
+        Post: async (parent: any, args: any, {db, session} : any) => {
             let postsRef = db.collection('posts')
             let snapshot = await postsRef
             .where('nid','==',args.nid)
             .where('slug','==',args.slug)
-            .where('published','==',true)
             .get()
             
             if (snapshot.empty) {
@@ -66,16 +66,18 @@ const resolvers = {
             return null
             }  
             
-            var data : any =[]
+            var data : any ={}
             snapshot.forEach((doc: any) => {
                 // console.log(doc.id, '=>', doc.data());
-                data.push({
+                data={
                     id:doc.id,
                     ...doc.data()
-                })
+                }
             });
-    
-            return data[0]
+            
+            if(data.published===true) return data
+            if(data.published===false && session.uid===data.uid) return data
+            return null
         },
         User: async (parent: any, args: any, { db, admin} : any) => {
             const userDoc=await db.collection('users').doc(args.username).get()
@@ -170,6 +172,18 @@ const resolvers = {
                 slug: slug(input.title),
                 uid: session.uid
             })
+    
+            return { id: result.id }
+        },
+        editPost: async (parent: any, {input}: any, context : any) => {
+            const session= context.session
+            if(!session) return null
+            console.log(input)
+            const collection = context.db.collection('posts');
+            const result=await collection.add({
+                ...input,
+                tags: input?.tags?.split(",").map((tag : string) =>slug(tag)) || [],
+            }, { merge: true })
     
             return { id: result.id }
         },
@@ -373,8 +387,55 @@ const resolvers = {
     },
     Me : {
         posts : async (parent: any, args: any, {db} : any) => {
-
+            let postsRef = db.collection('posts')
+            let snapshot = await postsRef
+            // .where('published','==',true)
+            .where('uid','==',parent.uid)
+            // .orderBy("created","desc")
+            // .startAt(args?.page || 0)
+            // .limit(4)
+            .get()
+            
+            if (snapshot.empty) {
+            console.log('No matching documents.');
+            return []
+            }  
+            
+            var data : any =[]
+            snapshot.forEach((doc: any) => {
+                // console.log(doc.id, '=>', doc.data());
+                data.push({
+                    id:doc.id,
+                    ...doc.data()
+                })
+            });
+    
+            return data
         },
+        savedPosts : async (parent: any, args: any, {db} : any) => {
+            let postsRef = db.collection('saves')
+            let snapshot = await postsRef
+            // .where('published','==',true)
+            .where('uid','==',parent.uid)
+            // .orderBy("created","desc")
+            // .startAt(args?.page || 0)
+            // .limit(4)
+            .get()
+            
+            if (snapshot.empty) {
+            console.log('No matching documents.');
+            return []
+            }  
+            
+            var data : any =[]
+            snapshot.forEach((doc: any) =>  data.push(db.collection('posts').doc(doc.data().pid)
+                .get()
+                .then( (postDoc:any)=> ( { id:postDoc.id, ...postDoc.data() } ) )
+            ))
+            
+            const solvedData=await Promise.all(data)
+            return solvedData
+        }
     },
     Comment : {
         user : async (parent: any, args: any, {db, admin} : any) => {

@@ -13,6 +13,7 @@ const Latest : NextPage = () => {
       title
       nid
       slug
+      save
       content {
         type
         data
@@ -30,6 +31,7 @@ const Latest : NextPage = () => {
 
   return (
     <>
+    
       <SubLayout 
           children={<>
             {data?.Posts?.map( (post : any) => <PostCard key={post.id} data={post}/> )}

@@ -1,12 +1,12 @@
 
 import type { NextPage, GetServerSideProps } from 'next'
 import useSWR from 'swr'
-import fetcher from '../../../lib/fetcher'
+import fetcher from '../../../../lib/fetcher'
 import Link from 'next/link'
-import Like from '../../../components/buttons/like'
-import Save from '../../../components/buttons/save'
-import Comment from '../../../components/cards/comments'
-import timeago from '../../../lib/timeago'
+import Like from '../../../../components/buttons/like'
+import Save from '../../../../components/buttons/save'
+import Comment from '../../../../components/cards/comments'
+import timeago from '../../../../lib/timeago'
 
 import { ParsedUrlQuery } from 'querystring';
 
@@ -87,7 +87,7 @@ const Home: NextPage = ({data : {Post : data}}:any) => {
         <Save pid={data.id} init={data.save}/>
         <Like pid={data.id} init={data.like} />
         </div>
-          <h2 className="text-3xl text-gray-900 font-medium title-font mb-2">
+          <h2 className="text-lg md:text-2xl lg:text-3xl text-gray-900 font-medium title-font my-6">
             { data.title }
           </h2>
           <div>

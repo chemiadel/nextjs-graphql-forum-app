@@ -60,6 +60,8 @@ const typeDefs =gql`
         name: String
         bio: String
       }
+
+
 #ME   
       type Me {
         uid: ID!
@@ -73,6 +75,7 @@ const typeDefs =gql`
         savedPosts : [Post]
         likedPosts : [Post]
       }
+
 #Comment
       type Comment {
         id: ID!
@@ -82,9 +85,10 @@ const typeDefs =gql`
         user: User
       }
 
+
 #QUERY
       type Query {
-        Me : User
+        Me : Me
         Posts (page: Int, tags: String) : [Post]
         Comments ( pid: String! ) : [Comment]
         Post (nid: String!, slug:String!) : Post
@@ -99,6 +103,8 @@ const typeDefs =gql`
 #MUTATION
       type Mutation {
         addPost( input : inputPost! ) : Post
+        editPost( input : inputPost! ) : Post
+
         addComment ( pid:String!, comment: String! ) : Comment
         deleteComment (commentId: String!) : Boolean
         editUser( input: inputUser! ) : User
