@@ -3,7 +3,7 @@ import { signOut } from '../../lib/hooks/useAuthContext'
 import Link from 'next/link'
 
 
-export default function Menu({src} : any){
+export default function Menu({src, username} : any){
     const [ toggle, setToggle ] = useState(false)
     const wrapperRef = useRef(null);
     useOutsideAlerter(wrapperRef, setToggle);
@@ -26,7 +26,7 @@ export default function Menu({src} : any){
             Dashboard
         </a>
         </Link>
-        <Link href={`/user/me`} passHref>
+        <Link href={`/user/${username}`} passHref>
         <a  onClick={()=>setToggle(!toggle)} className="block px-4 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 transform dark:text-gray-300 hover:bg-blue-500 hover:text-white dark:hover:text-white">
             Profile
         </a>

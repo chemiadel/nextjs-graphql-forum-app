@@ -22,7 +22,7 @@ export default function Header(props : any){
       {loading ? null :
       <div className="w-2/6 flex flex-row-reverse space-x-2" >
         
-        { authUser? <Menu src={authUser?.claims?.picture} /> : null}
+        { authUser? <Menu src={authUser?.claims?.picture} username={authUser?.claims?.username} /> : null}
         <Link href={ authUser ? "/post/create" : "/login" } prefetch={false}>
         <button className="mx-auto my-1 px-4 py-1 rounded-md text-lg font-medium border-b-2 focus:outline-none focus:ring transition text-white bg-gray-600 border-gray-800 hover:bg-gray-700 active:bg-green-800 focus:ring-gray-300" type="submit">
             {!authUser? "Join" : "Post"}

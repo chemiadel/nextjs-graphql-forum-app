@@ -76,10 +76,10 @@ const resolvers = {
             });
             
             if(data.published===true) return data
-            if(data.published===false && session.uid===data.uid) return data
+            if(data.published===false && session?.uid===data.uid) return data
             return null
         },
-        User: async (parent: any, args: any, { db, admin} : any) => {
+        User: async (parent: any, args: any, {db, admin} : any) => {
             const userDoc=await db.collection('users').doc(args.username).get()
             if(!userDoc.exists) return null
     
@@ -93,77 +93,56 @@ const resolvers = {
             .catch((error: any) => console.log('res.POST.user',error ));
     
         },
-        checkUsername : async (parent: any, args: any, context : any) =>  {
-            const session = context.session
-            console.log('session', session)
-            const doc = await context.db.collection('users').doc(args.username).get()
-            
-            if (doc.exists) {
-                const docData = doc.data()
-                if(docData.uid!==session.uid) return ( console.log('already taken'), false )
-        
-                return true
-            } 
+        checkUsername : async (parent: any, args: any, { db, session } : any) =>  {
+            const doc = await db.collection('users').doc(args.username).get()
+            const docData = doc.data()
+
+            if (doc.exists && (docData.uid!==session.uid)) return false
         
             return true
         },
-        Like : async (parent: any, args: any, context : any) =>  {
-            const session = context.session
-            if(!session) return null
-
-            const query = context.db.collection('likes')
+        Like : async (parent: any, args: any, { db, session } : any) =>  {
+            const query = db.collection('likes')
             .where('uid','==',session.uid)
             .where('pid','==',args.pid)
 
             const QuerySnapshot = await query.get()
-
             return !QuerySnapshot.empty
-        },
-        Save : async (parent: any, args: any, context : any) =>  {
-            const session = context.session
-            if(!session) return null
 
-            const query = context.db.collection('saves')
+        },
+        Save : async (parent: any, args: any, { db, session} : any) =>  {
+            const query = db.collection('saves')
             .where('uid','==',session.uid)
             .where('pid','==',args.pid)
 
             const QuerySnapshot = await query.get()
-
             return !QuerySnapshot.empty
-        },
-        Follow : async (parent: any, args: any, context : any) =>  {
-            const session = context.session
-            if(!session) return null
 
-            const query = context.db.collection('follows')
+        },
+        Follow : async (parent: any, args: any, { db, session} : any) =>  {
+
+            const query = db.collection('follows')
             .where('uid','==',session.uid)
             .where('to_uid','==',args.to_uid)
 
             const QuerySnapshot = await query.get()
-
             return !QuerySnapshot.empty
         },
-        Me : async (parent: any, args: any, {db, session} : any) => {
-            if(!session) return null
+        Me : async (parent: any, args: any, { db, session} : any) => {
             const userDoc=await db.collection('users').doc(session.username).get()
-            if(!userDoc.exists) return null
-    
             const userData=userDoc?.data()
-            if(!userData) return null
-            
+
             return admin
             .auth()
-            .getUser(userData.uid)
+            .getUser(userData?.uid)
             .then((userRecord: any) => ( {...userRecord, username: userRecord.customClaims.username} ) )
             .catch((error: any) => console.log('res.POST.user',error ));
         }
     },
     Mutation: {
-        addPost: async (parent: any, {input}: any, context : any) => {
-            const session= context.session
-            if(!session) return null
-            console.log(input)
-            const collection = context.db.collection('posts');
+        addPost: async (parent: any, {input}: any, { db, session} : any) => {
+
+            const collection = db.collection('posts');
             const result=await collection.add({
                 ...input,
                 tags: input?.tags?.split(",").map((tag : string) =>slug(tag)) || [],
@@ -175,23 +154,22 @@ const resolvers = {
     
             return { id: result.id }
         },
-        editPost: async (parent: any, {input}: any, context : any) => {
-            const session= context.session
-            if(!session) return null
-            console.log(input)
-            const collection = context.db.collection('posts');
-            const result=await collection.add({
+        editPost: async (parent: any, {pid, input}: any, { db, session} : any) => {
+
+            const doc = db.collection('posts').doc(pid)
+            const docData= await doc.get().then((doc:any)=>doc.data())
+
+            if(session.uid!==docData.uid) return null
+
+            return await doc.set({
                 ...input,
                 tags: input?.tags?.split(",").map((tag : string) =>slug(tag)) || [],
             }, { merge: true })
-    
-            return { id: result.id }
-        },
-        addComment: async (parent: any, args: any, context : any) => {
-            const session= context.session
-            if(!session) return null
+            .then(() => ({id: pid}))
 
-            const collection = context.db.collection('comments');
+        },
+        addComment: async (parent: any, args: any, { db, session} : any) => {
+            const collection = db.collection('comments');
             const result=await collection.add({
                 uid: session.uid,
                 created: new Date(),
@@ -201,39 +179,28 @@ const resolvers = {
     
             return { id: result.id }
         },
-        deleteComment: async (parent: any, args: any, context : any) => {
-            const session = context.session
-            if(!session) return false
-            
-            console.log('commentId', args.commentId)
-
-            return await context.db.collection("comments").doc(args.commentId).delete().then(() => {
-                return true
-            }).catch((error:any) => {
-                console.log('deleteComment.Error', error)
-                return false
-            })
-
+        deleteComment: async (parent: any, args: any, { db, session} : any) => {
+            return await db.collection("comments")
+            .doc(args.commentId)
+            .where("uid", "==", session.uid)
+            .get()
+            .then((querySnapshot: any) => querySnapshot?.docs[0]?.delete())
+            .then(() => true)
         },
-        editUser : async (parent: any, args: any, context : any) => {
-                const session = context.session
-                console.log("session", session)
-    
-                if(!session) return null
-    
-                const isAvailable= await checkUsername(parent, args, context)
+        editUser : async (parent: any, args: any, { db, session } : any) => {
+                const isAvailable= await checkUsername(parent, args, { db, session })
                 console.log("isAvailable", isAvailable)
-    
+
                 if(!isAvailable) return null
                 
-                const ref= context.db.collection('users')
-    
+                const ref= db.collection('users')
+
                 if(session.username) await ref.doc(session.username).delete()
-    
+
                 await ref.doc(args.input.username).set({
                     uid: session.uid
                 })
-    
+
                 await admin
                 .auth()
                 .setCustomUserClaims(session.uid, { 
@@ -243,81 +210,71 @@ const resolvers = {
                 
                 const newDoc= await ref.doc(args.input.username).get()
                 const newData=newDoc.data()
-    
+
                 console.log('changed',newData)
                 return { 
                     uid: session.uid ,
                     ...args.input
                 }
         },
-        toggleLike: async (parent: any, args: any, context : any) => {
-            const session = context.session
-            if(!session) return null
+        toggleLike: async (parent: any, args: any, { db, session } : any) => {
 
-            const query = context.db.collection('likes')
+            return db.collection('likes')
             .where('uid','==',session.uid)
             .where('pid','==',args.pid)
+            .get()
+            .then((QuerySnapshot : any) => {
+                if(QuerySnapshot.empty){
+                    db.collection('likes').doc().set({
+                        pid: args.pid,
+                        uid: session.uid
+                    })
+                    return true
+                }
+    
+                QuerySnapshot.docs[0].delete()
+                return false
+            })
 
-            const QuerySnapshot = await query.get()
 
-            if(QuerySnapshot.empty){
-                await context.db.collection('likes').doc().set({
-                    pid: args.pid,
-                    uid: session.uid
-                })
-                return true
-            }
-
-            QuerySnapshot.forEach((doc : any) => doc.ref.delete() );
-            
-            return false
 
         },
-        toggleSave: async (parent: any, args: any, context : any) => {
-            const session = context.session
-            if(!session) return null
-
-            const query = context.db.collection('saves')
+        toggleSave: async (parent: any, args: any, { db, session } : any) => {
+            return db.collection('saves')
             .where('uid','==',session.uid)
             .where('pid','==',args.pid)
-
-            const QuerySnapshot = await query.get()
-
-            if(QuerySnapshot.empty){
-                await context.db.collection('saves').doc().set({
-                    pid: args.pid,
-                    uid: session.uid
-                })
-                return true
-            }
-
-            QuerySnapshot.forEach((doc : any) => doc.ref.delete() );
-            
-            return false
+            .get()
+            .then((QuerySnapshot : any) => {
+                if(QuerySnapshot.empty){
+                    db.collection('saves').doc().set({
+                        pid: args.pid,
+                        uid: session.uid
+                    })
+                    return true
+                }
+    
+                QuerySnapshot.docs[0].delete()
+                return false
+            })
 
         },
-        toggleFollow: async (parent: any, args: any, context : any) => {
-            const session = context.session
-            if(!session) return null
-
-            const query = context.db.collection('follows')
+        toggleFollow: async (parent: any, args: any, { db, session } : any) => {
+            return db.collection('saves')
             .where('uid','==',session.uid)
-            .where('to_uid','==',args.to_uid)
-
-            const QuerySnapshot = await query.get()
-
-            console.log('args fololow',args)
-            if(QuerySnapshot.empty){
-                await context.db.collection('follows').doc().set({
-                    to_uid: args.to_uid,
-                    uid: session.uid
-                })
-                return true
-            }
-
-            QuerySnapshot.forEach((doc : any) => doc.ref.delete() );
-            
-            return false
+            .where('pid','==',args.pid)
+            .get()
+            .then((QuerySnapshot : any) => {
+                if(QuerySnapshot.empty){
+                    db.collection('saves').doc().set({
+                        pid: args.pid,
+                        uid: session.uid
+                    })
+                    return true
+                }
+    
+                QuerySnapshot.docs[0].delete()
+                return false
+            })
 
         },
     },
@@ -455,18 +412,19 @@ const resolvers = {
 
 
     
-const checkUsername = async (parent: any, args: any, context : any) =>  {
-    const session = context.session
-    const doc = await context.db.collection('users').doc(args.input.username).get()
+const checkUsername = async (parent: any, args: any, { db, session } : any) =>  {
+    const doc = await db.collection('users').doc(args.input.username).get()
     
     if (doc.exists) {
         const docData = doc.data()
-        if(docData.uid!==session.uid) return  false 
+        if(docData.uid!==session.uid) return true
 
         return true
     } 
 
-    return true
+    return ({
+        isAvailable:true
+    })
 }
 
 export default resolvers

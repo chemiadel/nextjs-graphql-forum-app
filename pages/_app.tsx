@@ -9,7 +9,6 @@ import { SWRConfig } from 'swr'
 import fetcher from '../lib/fetcher'
 
 function MyApp({ Component, pageProps }: AppProps) {
-    console.log({pageProps})
 
   return  <AuthProvider>
       <Layout> 
@@ -32,8 +31,6 @@ function Redirect({children, Component} : {
   Component: any
 }){
 
-  const {authUser , loading}=useAuth()
-  // console.log({Component:Component.private})
   if(Component.private) return <>{children}</>
 
   return <>{children}</>

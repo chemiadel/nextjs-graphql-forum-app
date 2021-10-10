@@ -8,6 +8,7 @@ import fetcher from '../../../../lib/fetcher'
 import { useRouter } from 'next/router'
 import { useForm, Controller } from 'react-hook-form'
 import useSWR from 'swr'
+import { VariablesAreInputTypesRule } from 'graphql'
 
 
 type FormValues = {
@@ -50,14 +51,14 @@ const Home: NextPage = () => {
     }
 
     console.log({payload})
-    return 
+    // return 
     return fetcher(`mutation EditPost( $input: inputPost!) {
-      editPost ( input : $input){
+      editPost ( pid: "${data.Post.id}", input : $input){
         id
       }
     }`, payload)
     .then(res=> {
-      // if(res?.editPost?.id) 
+      if(res?.editPost?.id) window.alert('Post edited!')
     })
   }
 
@@ -86,9 +87,10 @@ const Home: NextPage = () => {
         <input {...register("tags")} defaultValue={data.Post.tags.join("")} placeholder="Tags e.g. (cakes, arcs) " className="w-full  bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"/>
         <Controller
             control={control}
+            defaultValue={data.Post.content.data}
             name="content"
             render={({ field: { onChange, onBlur, value, ref } }) => (
-              <MDEditor value={data.Post.content.data} onChange={onChange} />
+              <MDEditor defaultValue={value} onChange={onChange} />
             )}
           />
         

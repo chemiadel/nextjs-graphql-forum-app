@@ -18,6 +18,7 @@ const Home: NextPage = () => {
       posts {
         id
         uid
+        created
         title
         like
         save

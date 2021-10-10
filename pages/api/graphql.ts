@@ -1,24 +1,30 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { ApolloServer } from 'apollo-server-micro';
-import typeDefs from '../../lib/graphql/typeDefs'
-import resolvers from '../../lib/graphql/resolvers'
+import { ApolloServer, makeExecutableSchema } from 'apollo-server-micro';
+import { permissions, typeDefs, resolvers} from '../../lib/graphql'
 import admin from '../../lib/firebase/init-admin'
-import { authServer } from '../../lib/hooks/authServer'
+import { authServer } from '../../lib/hooks/authServer';
+const { applyMiddleware } = require('graphql-middleware')
+
+
+const schema = applyMiddleware(
+  makeExecutableSchema({
+    typeDefs,
+    resolvers,
+  }),
+  permissions,
+)
 
 const server = new ApolloServer({ 
-  typeDefs, 
-  resolvers,
+  schema,
   context: async (ctx : any) => {
-    
-    const db=admin.firestore()
-    const session=await authServer(ctx)
-    
+    const session = await authServer(ctx)
+    const db = admin.firestore()
     return {db, session, admin}
   } 
 });
 
-export  const  config  =  {
-  api:  {
+export const  config  =  {
+  api: {
       bodyParser:  false
   }
 };

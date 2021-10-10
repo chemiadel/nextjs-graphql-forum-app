@@ -1,6 +1,6 @@
 import { gql } from 'apollo-server-micro'
 
-const typeDefs =gql`
+export const typeDefs =gql`
 #Scalars
       scalar Date
 
@@ -103,7 +103,7 @@ const typeDefs =gql`
 #MUTATION
       type Mutation {
         addPost( input : inputPost! ) : Post
-        editPost( input : inputPost! ) : Post
+        editPost( pid:String, input : inputPost! ) : Post
 
         addComment ( pid:String!, comment: String! ) : Comment
         deleteComment (commentId: String!) : Boolean
