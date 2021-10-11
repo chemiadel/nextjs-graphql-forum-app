@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
-import PostCard from '../../components/cards/postcard'
-import Tags from '../../components/cards/toptags'
+import PostCard from 'components/cards/postcard'
+import Tags from 'components/cards/toptags'
 
 import useSWR from 'swr'
 

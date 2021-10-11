@@ -154,7 +154,7 @@ const resolvers = {
     
             return { id: result.id }
         },
-        editPost: async (parent: any, {pid, input}: any, { db, session} : any) => {
+        editPost: async (parent: any, { pid, input}: any, { db, session} : any) => {
 
             const doc = db.collection('posts').doc(pid)
             const docData= await doc.get().then((doc:any)=>doc.data())
@@ -205,7 +205,7 @@ const resolvers = {
                 .auth()
                 .setCustomUserClaims(session.uid, { 
                     username: args.input.username,
-                    bio: args.input.bio                
+                    name: args.input.name                
                 })
                 
                 const newDoc= await ref.doc(args.input.username).get()

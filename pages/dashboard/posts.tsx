@@ -1,12 +1,10 @@
-import type { NextPage } from 'next'
+import type { CustomNextPage } from 'lib/types'
 import useSWR from 'swr'
-import SubLayout from '../../components/_subLayout/dashboardL'
-import fetcher from '../../lib/fetcher'
+import SubLayout from 'components/_subLayout/dashboardL'
 import Link from 'next/link'
-import timeago from '../../lib/timeago'
+import timeago from 'lib/timeago'
 
-import { ParsedUrlQuery } from 'querystring';
-const Posts : NextPage = () => {
+const Posts : CustomNextPage = () => {
 
   const { data , error } = useSWR(`query {
     Me {
@@ -49,6 +47,7 @@ const Posts : NextPage = () => {
   )
 }
 
+Posts.auth=true
 export default Posts
 
 function Post({data} : any){

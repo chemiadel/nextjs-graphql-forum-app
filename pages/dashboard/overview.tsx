@@ -1,8 +1,8 @@
-import type { NextPage } from 'next'
 import useSWR from 'swr'
-import SubLayout from '../../components/_subLayout/dashboardL'
+import SubLayout from 'components/_subLayout/dashboardL'
+import type { CustomNextPage } from 'lib/types'
 
-const Overview : NextPage = () => {
+const Overview : CustomNextPage = () => {
 
   const { data , error } = useSWR(`query {
     Me {
@@ -26,11 +26,11 @@ const Overview : NextPage = () => {
             <div className="container w-1/2 px-5 py-14 mx-auto">
                 <div className="flex flex-wrap -m-4 text-center">
                 <div className="p-4 w-1/2">
-                    <h2 className="title-font font-medium sm:text-4xl text-3xl text-gray-900">{data.Me.posts.length}</h2>
+                    <h2 className="title-font font-medium sm:text-4xl text-3xl text-gray-900">{data?.Me?.posts?.length || 0}</h2>
                     <p className="leading-relaxed">Posts</p>
                 </div>
                 <div className="p-4 w-1/2">
-                    <h2 className="title-font font-medium sm:text-4xl text-3xl text-gray-900">{data.Me.savedPosts.length}</h2>
+                    <h2 className="title-font font-medium sm:text-4xl text-3xl text-gray-900">{data?.Me?.savedPosts?.length || 0}</h2>
                     <p className="leading-relaxed">Saved</p>
                 </div>
                 
@@ -45,4 +45,5 @@ const Overview : NextPage = () => {
   )
 }
 
+Overview.auth=true
 export default Overview

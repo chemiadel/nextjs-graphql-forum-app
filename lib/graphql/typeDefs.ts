@@ -58,7 +58,6 @@ export const typeDefs =gql`
       input inputUser {
         username: String!
         name: String
-        bio: String
       }
 
 

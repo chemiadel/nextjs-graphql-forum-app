@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import ProfileL from '../../../components/_subLayout/profileL'
-import PostCard from '../../../components/cards/postcard'
+import ProfileL from 'components/_subLayout/profileL'
+import PostCard from 'components/cards/postcard'
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
 

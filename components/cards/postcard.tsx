@@ -16,7 +16,8 @@ export default function PostCard({data} : any){
             <Link prefetch={false} href={`/post/${data.nid}/${data.slug}`}>
               <h1 className="text-lg md:text-lg pr-2 
               break-normal max-w-xs md:max-w-md
-              cursor-pointer text-gray-900 font-medium title-font mb-2">
+              cursor-pointer text-gray-900 font-medium title-font mb-2
+              hover:underline">
                 { data.title }
               </h1>
             </Link>

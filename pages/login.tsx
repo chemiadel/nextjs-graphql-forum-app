@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react'
 import Head from 'next/head'
 import firebase from "firebase/app";
 import "firebase/auth";
-import { useAuth } from '../lib/hooks/useAuthContext'
+import { useAuth } from '@/lib/hooks/useAuthContext'
 import {useRouter} from 'next/router';
 
 type privateNextPage = NextPage & { private?: boolean }
@@ -16,7 +16,7 @@ const Home: privateNextPage = () => {
   
   useEffect(()=>{
     if(!loading && authUser) router.push('/')
-  },[loading])
+  },[loading, authUser])
 
   if(loading || authUser) return null
 

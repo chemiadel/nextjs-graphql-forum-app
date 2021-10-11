@@ -1,10 +1,12 @@
 import type { NextPage } from 'next'
-import PostCard from '../components/cards/postcard'
-import SubLayout from '../components/_subLayout/homeL'
+import PostCard from 'components/cards/postcard'
+import SubLayout from 'components/_subLayout/homeL'
 import useSWR from 'swr'
 
+type authNextPage = NextPage & { auth?: boolean }
 
-const Latest : NextPage = () => {
+
+const Index : authNextPage = () => {
   const { data , error } = useSWR(`query{
     Posts{
       id
@@ -43,4 +45,4 @@ const Latest : NextPage = () => {
   )
 }
 
-export default Latest
+export default Index

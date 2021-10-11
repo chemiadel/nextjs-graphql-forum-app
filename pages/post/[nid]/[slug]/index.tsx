@@ -1,12 +1,14 @@
 
 import type { NextPage, GetServerSideProps } from 'next'
-import useSWR from 'swr'
-import fetcher from '../../../../lib/fetcher'
+import fetcher from 'lib/fetcher'
 import Link from 'next/link'
-import Like from '../../../../components/buttons/like'
-import Save from '../../../../components/buttons/save'
-import Comment from '../../../../components/cards/comments'
-import timeago from '../../../../lib/timeago'
+import { serialize } from 'next-mdx-remote/serialize'
+import { MDXRemote } from 'next-mdx-remote'
+
+import Like from 'components/buttons/like'
+import Save from 'components/buttons/save'
+import Comment from 'components/cards/comments'
+import timeago from 'lib/timeago'
 
 import { ParsedUrlQuery } from 'querystring';
 
@@ -24,6 +26,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
           uid
           created
           title
+          tags
           nid
           slug
           like
@@ -41,14 +44,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         }
       }`, null, context.req.headers)
 
+      console.log(data)
+      const mdxSource = await serialize(data.Post.content.data)
+
       return {
         props: {
-            data
+            data,
+            mdxSource
         }, // will be passed to the page component as props
       }
 }
 
-const Home: NextPage = ({data : {Post : data}}:any) => {
+const Home: NextPage = ({data : {Post: data}, mdxSource} : any) => {
 
     console.log('props', data)
 
@@ -91,13 +98,17 @@ const Home: NextPage = ({data : {Post : data}}:any) => {
             { data.title }
           </h2>
           <div>
-          <button className="m-1 my-2 bg-gray-100 border-0 p-1 focus:outline-none hover:bg-gray-200 rounded text-sm mt-0">#Following</button>
-          <button className="m-1 my-2 bg-gray-100 border-0 p-1 focus:outline-none hover:bg-gray-200 rounded text-sm mt-0">#Following</button>
-          <button className="m-1 my-2 bg-gray-100 border-0 p-1 focus:outline-none hover:bg-gray-200 rounded text-sm mt-0">#Following</button>
-          <button className="m-1 my-2 bg-gray-100 border-0 p-1 focus:outline-none hover:bg-gray-200 rounded text-sm mt-0">#Following</button>
-
+            {data.tags.map((tag:any)=><button className="m-1 my-2 bg-gray-100 border-0 p-1 focus:outline-none hover:bg-gray-200 rounded text-sm mt-0">
+              {`# ${tag}`}</button>
+            )}
           </div>
-        <p className="leading-relaxed text-base p-4 pt-6"> { data.content.data} </p>
+          {/* <ReactMarkdown>
+              { data.content.data}
+          </ReactMarkdown> */}
+          <div className="unreset md">
+          <MDXRemote {...mdxSource} />
+          </div>
+        {/* <p className="leading-relaxed text-base p-4 pt-6"> { data.content.data} </p> */}
 
       </div>
       <Comment pid={data.id}/>

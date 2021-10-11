@@ -1,12 +1,21 @@
 import type { AppProps } from 'next/app'
-import Layout from '../components/_layout'
-import AuthProvider from '../lib/hooks/useAuthContext'
-import './../lib/firebase/init'
+import type { NextPage } from 'next'
+
+import Layout from 'components/_layout'
+import Complete from 'components/sections/modal'
+import AuthProvider from 'lib/hooks/useAuthContext'
+import 'lib/firebase/init'
 import 'tailwindcss/tailwind.css'
 import "easymde/dist/easymde.min.css";
-import { useAuth } from '../lib/hooks/useAuthContext'
+import "styles/unreset.scss";
+import "styles/markdown.scss";
 import { SWRConfig } from 'swr'
-import fetcher from '../lib/fetcher'
+import fetcher from 'lib/fetcher'
+import dynamic from 'next/dynamic'
+const NextNprogress = dynamic(() => import("nextjs-progressbar"),{ssr:false})
+import { useAuth } from 'lib/hooks/useAuthContext'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 function MyApp({ Component, pageProps }: AppProps) {
 
@@ -17,7 +26,9 @@ function MyApp({ Component, pageProps }: AppProps) {
             fetcher : async query => fetcher(query)
           }}>
             <Redirect Component={Component}>
-            <Component {...pageProps} />
+                <NextNprogress height={2} options={{ showSpinner: false }} />
+                <Complete />
+                <Component {...pageProps} />
             </Redirect>
         </SWRConfig>
       </Layout>
@@ -26,12 +37,26 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 export default MyApp
 
-function Redirect({children, Component} : {
-  children: React.ReactNode
-  Component: any
-}){
+type authNextPage = NextPage & { auth?: boolean }
 
-  if(Component.private) return <>{children}</>
+function Redirect({ Component, children} : 
+  { 
+    children: React.ReactNode, 
+    Component: authNextPage
+  }){
+
+  const { authUser, loading} = useAuth()
+  const router = useRouter()
+
+  console.log('Component.auth', Component.auth)
+  useEffect(()=>{
+
+    if(Component.auth && !authUser && !loading) router.push('/login')
+
+  },[authUser, loading])
+
+  if(Component.auth && !authUser) return null
+
 
   return <>{children}</>
 }

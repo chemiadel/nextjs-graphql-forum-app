@@ -1,27 +1,15 @@
-import type { NextPage } from 'next'
+import type { CustomNextPage, FormValues } from 'lib/types'
 import Head from 'next/head'
-import { useAuth } from '../../../../lib/hooks/useAuthContext'
+import { useAuth } from 'lib/hooks/useAuthContext'
 import dynamic from 'next/dynamic'
-const MDEditor = dynamic(() => import('../../../../components/editor'),{ssr:false})
-import {useState} from 'react'
-import fetcher from '../../../../lib/fetcher'
+const MDEditor = dynamic(() => import('components/editor'),{ssr:false})
+import fetcher from 'lib/fetcher'
 import { useRouter } from 'next/router'
 import { useForm, Controller } from 'react-hook-form'
 import useSWR from 'swr'
-import { VariablesAreInputTypesRule } from 'graphql'
 
-
-type FormValues = {
-  title: string,
-  published: boolean,
-  tags: [string],
-  content: string
-};
-
-const Home: NextPage = () => {
-  const { authUser, loading} = useAuth()
+const EditPost: CustomNextPage = () => {
   const { register, setValue, control, handleSubmit, formState: { errors } } = useForm();
-
 
   const {nid, slug}=useRouter().query
 
@@ -100,4 +88,5 @@ const Home: NextPage = () => {
   )
 }
 
-export default Home
+EditPost.auth=true
+export default EditPost

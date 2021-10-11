@@ -1,28 +1,17 @@
-import type { NextPage } from 'next'
+import type { CustomNextPage, FormValues } from 'lib/types'
 import Head from 'next/head'
-import { useAuth } from '../../lib/hooks/useAuthContext'
 import dynamic from 'next/dynamic'
-const MDEditor = dynamic(() => import('../../components/editor'),{ssr:false})
-import {useState} from 'react'
-import fetcher from '../../lib/fetcher'
+const MDEditor = dynamic(() => import('components/editor'),{ssr:false})
+import fetcher from 'lib/fetcher'
 import { useRouter } from 'next/router'
 import { useForm, Controller } from 'react-hook-form'
 
-
-type FormValues = {
-  title: string,
-  published: boolean,
-  tags: [string],
-  content: string
-};
-
-const Home: NextPage = () => {
-  const { authUser, loading} = useAuth()
+const CreatePost: CustomNextPage = () => {
   const { register, setValue, control, handleSubmit, formState: { errors } } = useForm();
 
   const router=useRouter()
 
-  function onSubmit({title,tags,published,content} : FormValues){
+  function onSubmit({ title, tags, published, content} : FormValues){
     let payload={ 
       title,tags,published,
       content:{
@@ -77,4 +66,5 @@ const Home: NextPage = () => {
   )
 }
 
-export default Home
+CreatePost.auth=true
+export default CreatePost
