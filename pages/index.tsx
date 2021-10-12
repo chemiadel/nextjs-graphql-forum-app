@@ -1,12 +1,9 @@
-import type { NextPage } from 'next'
+import type { CustomNextPage } from 'lib/types'
 import PostCard from 'components/cards/postcard'
 import SubLayout from 'components/_subLayout/homeL'
 import useSWR from 'swr'
 
-type authNextPage = NextPage & { auth?: boolean }
-
-
-const Index : authNextPage = () => {
+const Index : CustomNextPage = () => {
   const { data , error } = useSWR(`query{
     Posts{
       id
@@ -28,8 +25,6 @@ const Index : authNextPage = () => {
       }
     }
   }`)
-
-  console.log('data', data?.Posts)
 
   return (
     <>

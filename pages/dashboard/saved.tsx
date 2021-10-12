@@ -34,17 +34,13 @@ const Saved : CustomNextPage = () => {
 
   if(!data) return null
 
-  return (
-    <>
-      <SubLayout 
-          children={<>
-                      {data?.Me?.savedPosts?.map( (post : any) => <PostCard key={post.id} data={post}/> )}
-          </>}
-          index={2}
-      />
+  return <>
+        {data?.Me?.savedPosts?.map( (post : any) => <PostCard key={post.id} data={post}/> )}
     </>
-  )
 }
 
 Saved.auth=true
+Saved.subLayout='DashboardLayout'
+Saved.subLayoutIndex=2
+
 export default Saved

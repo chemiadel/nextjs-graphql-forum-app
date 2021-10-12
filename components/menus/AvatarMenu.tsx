@@ -14,7 +14,7 @@ export default function Menu({src, username} : any){
         onClick={()=>setToggle(!toggle)} 
       >
         <img
-          className="mx-auto w-12 h-12 p-1 rounded-full object-cover"
+          className="mx-auto w-12 h-12 rounded-full object-contain border-2 border-gray-300 ring-2 ring-gray-100"
           src={src}
           alt="Avatar"
         />

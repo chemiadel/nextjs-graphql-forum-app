@@ -1,7 +1,14 @@
-import type { NextPage } from 'next'
+import type { NextPage, NextComponentType } from 'next'
 
 export type CustomNextPage = NextPage & {
-    auth?:boolean
+    auth?:boolean,
+    subLayout?: string,
+    subLayoutIndex?: number
+}
+
+export type CustomNextComponent = NextComponentType & {
+    subLayout?: string,
+    subLayoutIndex?: number
 }
 
 export type FormValues = {

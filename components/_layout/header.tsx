@@ -6,7 +6,7 @@ export default function Header(props : any){
     const { authUser, loading} = useAuth()
 
     return <header className="text-gray-600 body-font">
-    <div className="flex flex-nowrap mx-4 py-4 ">
+    <div className="flex flex-nowrap mx-2 py-2 md:mx-4 md:py-4 ">
     <Link href="/" passHref>
       <a className="w-1/5 mx-auto my-auto sm:block">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-10 h-10 text-white p-2 bg-gray-700 rounded-full mx-auto" viewBox="0 0 24 24">
@@ -20,9 +20,10 @@ export default function Header(props : any){
       </div>
      
       {loading ? null :
-      <div className="w-2/6 flex flex-row-reverse space-x-2" >
+      <div className="w-3/6 flex flex-row-reverse space-x-2" >
         
-        { authUser? <Menu src={authUser?.claims?.picture} username={authUser?.claims?.username} /> : null}
+        { authUser? 
+        <Menu src={authUser?.claims?.picture} username={authUser?.claims?.username} /> : null}
         <Link href={ authUser ? "/post/create" : "/login" } prefetch={false}>
         <button className="mx-auto my-1 px-4 py-1 rounded-md text-lg font-medium border-b-2 focus:outline-none focus:ring transition text-white bg-gray-600 border-gray-800 hover:bg-gray-700 active:bg-green-800 focus:ring-gray-300" type="submit">
             {!authUser? "Join" : "Post"}

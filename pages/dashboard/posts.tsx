@@ -32,22 +32,15 @@ const Posts : CustomNextPage = () => {
 
   if(!data) return null
   console.log({data})
-  return (
-    <>
-      <SubLayout 
-          children={<>
-                <div className="space-y-2 mx-2">
-                 {data.Me?.posts?.map((data :any)=><Post key={data.id} data={data}/>)}
-                 </div>
-          </>}
-
-          index={1}
-      />
-    </>
-  )
+  return <div className="space-y-2 mx-2">
+              {data.Me?.posts?.map((data :any)=><Post key={data.id} data={data}/>)}
+          </div>
 }
 
 Posts.auth=true
+Posts.subLayout='DashboardLayout'
+Posts.subLayoutIndex=1
+
 export default Posts
 
 function Post({data} : any){

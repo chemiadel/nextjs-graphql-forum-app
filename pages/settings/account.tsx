@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import fetcher from 'lib/fetcher'
 
 
-const Overview : CustomNextPage | null = () => {
+const Account : CustomNextPage | null = () => {
   const { authUser, loading} = useAuth()
   const { register, setValue, watch, handleSubmit, setError, clearErrors, formState: { errors } } = useForm();
 
@@ -41,9 +41,7 @@ const Overview : CustomNextPage | null = () => {
     }`)
   }
 
-  return <SubLayout 
-          children={<>
-            <section className="text-gray-600 body-font relative">
+  return <section className="text-gray-600 body-font relative">
   <div className="container px-5 py-4 mx-auto">
     <div className="lg:w-1/2 md:w-2/3 mx-auto">
       <div className="flex flex-wrap -m-2">
@@ -121,11 +119,13 @@ const Overview : CustomNextPage | null = () => {
       </div>
     </div>
   </div>
-</section>       
-          </>}
-
-          index={0}
-      />
+</section>
 }
 
-export default Overview
+
+
+Account.auth=true
+Account.subLayout='SettingLayout'
+Account.subLayoutIndex=0
+
+export default Account
