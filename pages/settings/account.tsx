@@ -1,5 +1,4 @@
 import type { CustomNextPage, FormDataAccount } from 'lib/types'
-import SubLayout from 'components/_subLayout/settingsL'
 import { useAuth } from 'lib/hooks/useAuthContext'
 import { useForm } from "react-hook-form";
 import { useEffect } from 'react';

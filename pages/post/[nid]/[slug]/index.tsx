@@ -93,7 +93,7 @@ const Home: NextPage = ({data : {Post: data}} : any) => {
             { data.title }
           </h2>
           <div>
-            {data.tags.map((tag:any)=><button className="m-1 my-2 bg-gray-100 border-0 p-1 focus:outline-none hover:bg-gray-200 rounded text-sm mt-0">
+            {data.tags.map((tag:any, index:number)=><button key={`${tag}-${index}`} className="m-1 my-2 bg-gray-100 border-0 p-1 focus:outline-none hover:bg-gray-200 rounded text-sm mt-0">
               {`# ${tag}`}</button>
             )}
           </div>

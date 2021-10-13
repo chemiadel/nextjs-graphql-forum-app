@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 import { useAuth } from "../../lib/hooks/useAuthContext"
 import { useForm } from "react-hook-form";
-import fetcher from '../../lib/fetcher'
+import fetcher from "../../lib/fetcher"
 import firebase from "firebase/app";
 import "firebase/auth"
 
@@ -12,10 +12,10 @@ export default function Modal(){
     useEffect(()=>{
       if(watch("username")==="") return
 
-        clearErrors('username')
+        clearErrors("username")
         checkUsername().then(data=> {
           if(!data.checkUsername){
-            console.log('errors',errors)
+            console.log("errors",errors)
             setError("username",{
               type:"manual",
               message: "Invalid"
@@ -49,7 +49,7 @@ export default function Modal(){
 
 
     return <div className="bg-opacity-10	 flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800">
-    <div className="bg-white rounded-lg w-1/3">
+    <div className="bg-white rounded-lg w-3/4 md:w-2/3 lg:w-1/3">
 
         <div className="flex flex-col items-start p-4">
         <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
@@ -64,7 +64,7 @@ export default function Modal(){
             <label className="leading-7 text-sm text-gray-600">Username</label>
             <input 
             defaultValue={authUser.claims.username} 
-            placeholder='Choose Username'
+            placeholder="Choose Username"
             {...register("username", {required:{
                 value: true,
                 message: "Field required"
@@ -76,7 +76,7 @@ export default function Modal(){
                 message: "Max 12 Characters"
               }, pattern: {
                 value: /^[a-zA-Z0-9]+$/,
-                message: "Letters & Numbers only"
+                message: "Letters and Numbers only"
               }
             })} 
             type="text" id="username" 
@@ -97,20 +97,3 @@ export default function Modal(){
     </div>
     </div>
 }
-
-
-<div className="h-screen w-full flex flex-col items-center justify-center bg-teal-lightest font-sans">
-	<div v-if="modal.visible" className="h-screen w-full absolute flex items-center justify-center bg-modal">
-        <div className="bg-white rounded shadow p-8 m-4 max-w-xs max-h-full text-center overflow-y-scroll">
-            <div className="mb-4">
-                <h1>Complete profile!</h1>
-            </div>
-            <div className="mb-8">
-                <p>Ready to get started? Keep scrolling to see some great components.</p>
-            </div>
-            <div className="flex justify-center">
-                <button className="flex-no-shrink text-white py-2 px-4 rounded bg-dark hover:bg-gray-800">Let's Go</button>
-            </div>
-        </div>
-    </div>
-</div>
