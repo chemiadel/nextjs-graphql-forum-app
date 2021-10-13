@@ -9,7 +9,7 @@ export default function PostCard({data} : any){
     
     return <div className="w-full ">
     <div className="p-2 pt-0 lg:pt-0 lg:p-4">
-      <div className="border border-gray-300 py-4 px-4 md:p-6 rounded-lg bg-white">
+      <div className="border border-gray-300 hover:border-gray-500 py-4 px-4 md:p-6 rounded-lg bg-white">
  
         <div className="flex flex-row content-center border-gray-200">
         <div className="flex-grow flex-col">

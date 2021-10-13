@@ -20,7 +20,7 @@ const Love = ({to_uid} : {to_uid: string}) => {
 
     return <button 
     onClick={toggleFollow} 
-    className={`inline-flex items-center border-2 bg-gray-100 ${value?" bg-gray-200 hover:bg-red-200":"hover:bg-gray-200"} py-1 px-3 focus:outline-none font-bold rounded text-base mt-4 md:mt-0`}>
+    className={`inline-flex items-center border-2 border-black ${value?" text-white bg-black hover:bg-red-200":"text-black hover:bg-gray-200"} py-1 px-3 focus:outline-none font-bold rounded text-base mt-4 md:mt-0`}>
         {value ? "Following" : "Follow"}
     </button>
   

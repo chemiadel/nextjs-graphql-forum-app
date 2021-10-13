@@ -4,7 +4,8 @@ import { useAuth } from 'lib/hooks/useAuthContext'
 import { useForm } from "react-hook-form";
 import { useEffect } from 'react';
 import fetcher from 'lib/fetcher'
-
+import firebase from "firebase/app";
+import "firebase/auth"
 
 const Account : CustomNextPage | null = () => {
   const { authUser, loading} = useAuth()
@@ -24,15 +25,17 @@ const Account : CustomNextPage | null = () => {
 
   },[watch("username")])
 
-  if(loading || !authUser) return null
-
   const onSubmit = (data : FormDataAccount) => {
     fetcher(`mutation EditUser( $input: inputUser!) {
       editUser ( input : $input){
         uid
         username
       }
-    }`,data )
+    }`,data ).then(res=>{
+      if(res.editUser?.uid){
+        firebase.auth().currentUser?.getIdTokenResult(true)
+      }
+    })
   }
 
   function checkUsername(){

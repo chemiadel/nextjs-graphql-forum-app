@@ -2,9 +2,11 @@ import { useEffect } from 'react';
 import { useAuth } from "../../lib/hooks/useAuthContext"
 import { useForm } from "react-hook-form";
 import fetcher from '../../lib/fetcher'
+import firebase from "firebase/app";
+import "firebase/auth"
 
 export default function Modal(){
-    const { authUser, loading} = useAuth()
+    const { authUser, loading } = useAuth()
     const { register, watch, handleSubmit, setError, clearErrors, formState: { errors } } = useForm();
 
     useEffect(()=>{
@@ -29,7 +31,11 @@ export default function Modal(){
         uid
         username
         }
-    }`, data )
+    }`, data ).then(res=>{
+      if(res.editUser?.uid){
+        firebase.auth().currentUser?.getIdTokenResult(true)
+      }
+    })
     }
 
     function checkUsername(){
@@ -80,7 +86,7 @@ export default function Modal(){
           </div>
         </div>
         <div className="pt-3 mt-3 border-t ml-auto flex flex-row-reverse">
-            <button className=" bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            <button className=" bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
             Complete
             </button>
         </div>
@@ -103,7 +109,7 @@ export default function Modal(){
                 <p>Ready to get started? Keep scrolling to see some great components.</p>
             </div>
             <div className="flex justify-center">
-                <button className="flex-no-shrink text-white py-2 px-4 rounded bg-teal hover:bg-teal-dark">Let's Go</button>
+                <button className="flex-no-shrink text-white py-2 px-4 rounded bg-dark hover:bg-gray-800">Let's Go</button>
             </div>
         </div>
     </div>

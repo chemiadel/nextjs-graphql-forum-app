@@ -259,13 +259,13 @@ const resolvers = {
 
         },
         toggleFollow: async (parent: any, args: any, { db, session } : any) => {
-            return db.collection('saves')
+            return db.collection('follows')
             .where('uid','==',session.uid)
             .where('pid','==',args.pid)
             .get()
             .then((QuerySnapshot : any) => {
                 if(QuerySnapshot.empty){
-                    db.collection('saves').doc().set({
+                    db.collection('follows').doc().set({
                         pid: args.pid,
                         uid: session.uid
                     })

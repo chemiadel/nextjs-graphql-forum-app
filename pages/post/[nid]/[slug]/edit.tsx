@@ -62,7 +62,7 @@ const EditPost: CustomNextPage = () => {
         <div className="flex flex-row m-4">
             <h2 className="flex-grow font-bold text-3xl">Edit Post</h2>
             <button type="submit"
-            className="inline-flex items-center bg-gray-100 border-2 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base font-bold mt-4 md:mt-0">
+            className="inline-flex items-center bg-gray-100 border-2 border-black py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base font-bold mt-4 md:mt-0">
                 Save
             </button>
         </div>

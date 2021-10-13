@@ -20,7 +20,7 @@ export default function Tabs({children, index} : any){
         </Link>
         <Link href="/dashboard//saved" passHref>
         <a className={`cursor-pointer sm:px-6 py-3 w-1/2 sm:w-auto justify-center sm:justify-start border-b-2 title-font font-medium  inline-flex items-center leading-none ${index===2 ? "bg-gray-100 border-indigo-500 text-indigo-500 tracking-wider rounded-t":""}`}>
-          <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-5 h-5 mr-3" viewBox="0 0 24 24">
+          <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5 mr-3" viewBox="0 0 24 24">
             <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
           </svg>Saved

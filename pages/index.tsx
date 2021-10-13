@@ -26,18 +26,12 @@ const Index : CustomNextPage = () => {
     }
   }`)
 
-  return (
-    <>
-    
-      <SubLayout 
-          children={<>
-            {data?.Posts?.map( (post : any) => <PostCard key={post.id} data={post}/> )}
-          </>}
-
-          index={0}
-      />
+  return <>
+    {data?.Posts?.map( (post : any) => <PostCard key={post.id} data={post}/> )}
     </>
-  )
 }
+
+Index.subLayout='HomeLayout'
+Index.subLayoutIndex=0
 
 export default Index

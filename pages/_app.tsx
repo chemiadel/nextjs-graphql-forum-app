@@ -26,8 +26,6 @@ function MyApp({ Component, pageProps }: {
   const SubLayout : any = Component?.subLayout? SubLayouts[Component?.subLayout] : null
   const subLayoutIndex : number | undefined = Component.subLayoutIndex
 
-  console.log({subLayoutIndex})
-
   return  <AuthProvider>
           <Layout> 
             <SWRConfig 

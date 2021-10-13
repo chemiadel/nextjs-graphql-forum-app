@@ -13,15 +13,13 @@ function Redirect({ Component, children} :
     const router = useRouter()
 
     useEffect(()=>{
-  
+   
       if(Component.auth && !authUser && !loading) router.push('/login')
   
     },[authUser, loading])
-  
-    if(Component.auth && loading) return null
-  
-  
-    return <>{children}</>
+    
+    if(!Component.auth || authUser) return <>{children}</>
+    return null
   }
 
 export default Redirect

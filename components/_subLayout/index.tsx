@@ -10,4 +10,11 @@ const SubLayout : any = {
     SettingLayout
 }
 
+export enum SUB_LAYOUT_ENUM {
+    DashboardLayout = 'DashboardLayout',
+    HomeLayout = 'HomeLayout',
+    ProfileLayout = 'ProfileLayout',
+    SettingLayout = 'SettingLayout',
+}
+
 export default SubLayout

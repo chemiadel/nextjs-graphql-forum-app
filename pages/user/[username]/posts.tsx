@@ -35,16 +35,13 @@ const Home: NextPage = () => {
       }
     }
   }`)
-
-  console.log({query})
-  console.log({data})
-
-  if(!data) return null
+  
+  if(!data?.User?.username) return null
 
   return (
     <>
       <Head>
-        <title>{`${data?.User?.username || ''} | Posts`}</title>
+        <title>{`${data?.User?.username} | Posts`}</title>
       </Head>
 
       <main>
