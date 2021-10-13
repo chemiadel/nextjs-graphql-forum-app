@@ -2,8 +2,7 @@
 import type { NextPage, GetServerSideProps } from 'next'
 import fetcher from 'lib/fetcher'
 import Link from 'next/link'
-import { serialize } from 'next-mdx-remote/serialize'
-import { MDXRemote } from 'next-mdx-remote'
+import ReactMarkdown from "react-markdown";
 
 import Like from 'components/buttons/like'
 import Save from 'components/buttons/save'
@@ -44,18 +43,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         }
       }`, null, context.req.headers)
 
-      console.log(data)
-      const mdxSource = await serialize(data.Post.content.data)
-
       return {
         props: {
-            data,
-            mdxSource
+            data
         }, // will be passed to the page component as props
       }
 }
 
-const Home: NextPage = ({data : {Post: data}, mdxSource} : any) => {
+const Home: NextPage = ({data : {Post: data}} : any) => {
 
     console.log('props', data)
 
@@ -102,11 +97,9 @@ const Home: NextPage = ({data : {Post: data}, mdxSource} : any) => {
               {`# ${tag}`}</button>
             )}
           </div>
-          {/* <ReactMarkdown>
-              { data.content.data}
-          </ReactMarkdown> */}
           <div className="unreset md">
-          <MDXRemote {...mdxSource} />
+          {/* <ReactMarkdown source={data.content.data} /> */}
+          {data.content.data}
           </div>
         {/* <p className="leading-relaxed text-base p-4 pt-6"> { data.content.data} </p> */}
 

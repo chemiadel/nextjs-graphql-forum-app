@@ -1,7 +1,7 @@
 {
   "name": "nextjs-community",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.3.0",
+  "private": false,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -10,12 +10,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@headlessui/react": "^1.4.1",
-    "@next/bundle-analyzer": "^11.1.2",
     "apollo-server": "^3.3.0",
     "apollo-server-micro": "^2.3.3",
-    "class-validator": "^0.13.1",
-    "cross-env": "^7.0.3",
     "easymde": "^2.15.0",
     "firebase": "^8.9.1",
     "firebase-admin": "^9.11.1",
@@ -24,10 +20,10 @@
     "graphql-shield": "^7.5.0",
     "graphql-tools": "^8.2.0",
     "joi": "^17.4.2",
+    "lint": "^0.7.0",
     "micro": "^9.3.4",
     "nanoid": "^3.1.28",
     "next": "11.1.2",
-    "next-mdx-remote": "^3.0.5",
     "nextjs-progressbar": "0.0.11",
     "nookies": "^2.5.2",
     "react": "17.0.2",
