@@ -1,19 +1,18 @@
-import { useAuth } from '../../lib/hooks/useAuthContext'
+import { useState } from 'react'
+import { useAuth } from 'lib/hooks/useAuthContext'
 import Link from 'next/link'
-import Menu from '../menus/AvatarMenu'
+import Menu from 'components/menus/AvatarMenu'
+import Search from 'components/modals/search'
 
 export default function Header(props : any){
     const { authUser, loading} = useAuth()
+    const [openSearch, setOpenSearch ] = useState(false)
 
     return <footer className="text-gray-600 body-font">
     <div className="mr-auto container px-5 py-4 mx-auto flex items-center flex-row">
       <span className="mr-auto">
-        <button className="px-4 py-2 rounded-md text-sm font-medium focus:outline-none focus:ring transition text-gray-600 border-gray-600 hover:bg-gray-200 active:bg-gray-700 focus:ring-gray-300" type="submit">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-        </button>
-      </span>
+        <Search />
+      </span> 
 
       <Link href="/" passHref>
       <a className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
