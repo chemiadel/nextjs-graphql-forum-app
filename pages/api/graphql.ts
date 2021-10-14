@@ -11,7 +11,7 @@ const schema = applyMiddleware(
     typeDefs,
     resolvers,
   }),
-  permissions,
+  // permissions,
 )
 
 const server = new ApolloServer({ 

@@ -28,6 +28,7 @@ const Index : CustomNextPage = () => {
 
   return <>
     {data?.Posts?.map( (post : any) => <PostCard key={post.id} data={post}/> )}
+    <button className="mx-auto text-black text-md font-semibold hover:underline w-full m-2 "> Load more </button>
     </>
 }
 

@@ -3,10 +3,12 @@ import { shield, rule, and, or, inputRule } from 'graphql-shield'
 import { profileSchema, postSchema, commentSchema} from './validations'
 
 const isAuth = rule()(async (parent, args, {session}, info) => {
+  console.log('isAuth',session)
   return session!==null
 })
 
 const isCompleted = rule()(async (parent, args, {session}, info) => {
+  console.log('isCompleted',session)
   return session.username!==null
 })
 

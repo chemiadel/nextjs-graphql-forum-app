@@ -5,8 +5,7 @@ import Menu from 'components/menus/AvatarMenu'
 import Search from 'components/modals/search'
 
 export default function Header(props : any){
-    const { authUser, loading} = useAuth()
-    const [openSearch, setOpenSearch ] = useState(false)
+    const { authUser } = useAuth()
 
     return <footer className="text-gray-600 body-font">
     <div className="mr-auto container px-5 py-4 mx-auto flex items-center flex-row">

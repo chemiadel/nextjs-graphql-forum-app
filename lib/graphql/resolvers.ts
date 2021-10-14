@@ -225,14 +225,14 @@ const resolvers = {
             .get()
             .then((QuerySnapshot : any) => {
                 if(QuerySnapshot.empty){
-                    db.collection('likes').doc().set({
+                    db.collection('likes').add({
                         pid: args.pid,
                         uid: session.uid
                     })
                     return true
                 }
     
-                QuerySnapshot.docs[0].delete()
+                QuerySnapshot.docs[0].ref.delete()
                 return false
             })
 
@@ -246,14 +246,14 @@ const resolvers = {
             .get()
             .then((QuerySnapshot : any) => {
                 if(QuerySnapshot.empty){
-                    db.collection('saves').doc().set({
+                    db.collection('saves').add({
                         pid: args.pid,
                         uid: session.uid
                     })
                     return true
                 }
     
-                QuerySnapshot.docs[0].delete()
+                QuerySnapshot.docs[0].ref.delete()
                 return false
             })
 
@@ -265,14 +265,14 @@ const resolvers = {
             .get()
             .then((QuerySnapshot : any) => {
                 if(QuerySnapshot.empty){
-                    db.collection('follows').doc().set({
+                    db.collection('follows').add({
                         pid: args.pid,
                         uid: session.uid
                     })
                     return true
                 }
     
-                QuerySnapshot.docs[0].delete()
+                QuerySnapshot.docs[0].ref.delete()
                 return false
             })
 
