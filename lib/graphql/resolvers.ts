@@ -1,38 +1,33 @@
-import admin from '../firebase/init-admin'
 import { customAlphabet  } from 'nanoid'
+import * as admin from 'firebase-admin/lib/firebase-namespace'
+
 var slug = require('slug')
 
 const nanoid = customAlphabet('1234567890', 6)
 
+type TContext = {
+    db : admin.firestore.Firestore,
+    session: any,
+    auth: admin.auth.Auth
+}
+
 const resolvers = {
     Query : {
-        Posts: async (parent: any, args: any, {db} : any) => {
-
-            let postsRef = db.collection('posts')
-            let snapshot = await postsRef
-            .where('published','==',true)
-            .orderBy("created","desc")
-            // .startAt(args?.page || 0)
-            .limit(4)
-            .get()
+        Posts: (parent: any, args: any, {db} : TContext) => {
+            return  db.collection("posts")
+                        .orderBy("created","desc")
+                        .where('published','==',true)
+                        .offset((args.page || 0) * 4)
+                        .limit(4)
+                        .get()
+                        .then( (snapshot : admin.firestore.QuerySnapshot ) => {
+                            return snapshot
+                            .docs
+                            .map((doc : admin.firestore.DocumentSnapshot)=> ({id: doc.id, ...doc.data() }))
+                        })  
             
-            if (snapshot.empty) {
-            console.log('No matching documents.');
-            return []
-            }  
-            
-            var data : any =[]
-            snapshot.forEach((doc: any) => {
-                // console.log(doc.id, '=>', doc.data());
-                data.push({
-                    id:doc.id,
-                    ...doc.data()
-                })
-            });
-    
-            return data
         },
-        Comments : async (parent: any, args: any, {db} : any) => {
+        Comments : async (parent: any, args: any, {db} : TContext) => {
             let postsRef = db.collection('comments')
             let snapshot = await postsRef
             .where('pid','==',args.pid)
@@ -54,7 +49,7 @@ const resolvers = {
     
             return data
         },
-        Post: async (parent: any, args: any, {db, session} : any) => {
+        Post: async (parent: any, args: any, {db, session} : TContext) => {
             let postsRef = db.collection('posts')
             let snapshot = await postsRef
             .where('nid','==',args.nid)
@@ -79,29 +74,28 @@ const resolvers = {
             if(data.published===false && session?.uid===data.uid) return data
             return null
         },
-        User: async (parent: any, args: any, {db, admin} : any) => {
+        User: async (parent: any, args: any, {db, auth} : TContext) => {
             const userDoc=await db.collection('users').doc(args.username).get()
             if(!userDoc.exists) return null
     
             const userData=userDoc?.data()
             if(!userData) return null
             
-            return admin
-            .auth()
+            return auth
             .getUser(userData.uid)
             .then((userRecord: any) => ( {...userRecord, username: userRecord.customClaims.username} ) )
             .catch((error: any) => console.log('res.POST.user',error ));
     
         },
-        checkUsername : async (parent: any, args: any, { db, session } : any) =>  {
+        checkUsername : async (parent: any, args: any, { db, session } : TContext) =>  {
             const doc = await db.collection('users').doc(args.username).get()
             const docData = doc.data()
 
-            if (doc.exists && (docData.uid!==session.uid)) return false
+            if (doc.exists && (docData?.uid!==session.uid)) return false
         
             return true
         },
-        Like : async (parent: any, args: any, { db, session } : any) =>  {
+        Like : async (parent: any, args: any, { db, session } : TContext) =>  {
             const query = db.collection('likes')
             .where('uid','==',session.uid)
             .where('pid','==',args.pid)
@@ -110,7 +104,7 @@ const resolvers = {
             return !QuerySnapshot.empty
 
         },
-        Save : async (parent: any, args: any, { db, session} : any) =>  {
+        Save : async (parent: any, args: any, { db, session} : TContext) =>  {
             const query = db.collection('saves')
             .where('uid','==',session.uid)
             .where('pid','==',args.pid)
@@ -119,7 +113,7 @@ const resolvers = {
             return !QuerySnapshot.empty
 
         },
-        Follow : async (parent: any, args: any, { db, session} : any) =>  {
+        Follow : async (parent: any, args: any, { db, session} : TContext) =>  {
 
             const query = db.collection('follows')
             .where('uid','==',session.uid)
@@ -128,19 +122,45 @@ const resolvers = {
             const QuerySnapshot = await query.get()
             return !QuerySnapshot.empty
         },
-        Me : async (parent: any, args: any, { db, session} : any) => {
+        Me : async (parent: any, args: any, { db, session, auth} : TContext) => {
             const userDoc=await db.collection('users').doc(session.username).get()
             const userData=userDoc?.data()
 
-            return admin
-            .auth()
+            return auth
             .getUser(userData?.uid)
             .then((userRecord: any) => ( {...userRecord, username: userRecord.customClaims.username} ) )
             .catch((error: any) => console.log('res.POST.user',error ));
+        },
+        TopTags : async (parent: any, args: any, { db, session} : TContext) => {
+            return db.collection('posts')
+            .where('published','==',true)
+            .get()
+            .then(async (snapshot : any)=>{
+                if (!snapshot.empty) {
+
+                    var tagsArr : string[]=[]
+                    snapshot.forEach((doc : any)=> {
+                        tagsArr.push( ...doc.data().tags )
+                    })
+
+                    // var allTypesArray : string[] = ["4", "4", "2", "2", "2", "6", "2", "6", "6"];
+                    var map = tagsArr.reduce<Record<string, any>>((p, c) => {
+                    p[c] = (p[c] || 0) + 1;
+                    return p;
+                    }, {});
+
+                    var newTypesArray = Object.keys(map).sort(function(a, b) {
+                    return map[b] - map[a];
+                    });
+
+                    console.log({newTypesArray})
+                    return newTypesArray
+                }  
+            })
         }
     },
     Mutation: {
-        addPost: async (parent: any, {input}: any, { db, session} : any) => {
+        addPost: async (parent: any, {input}: any, { db, session} : TContext) => {
 
             const collection = db.collection('posts');
             const result=await collection.add({
@@ -154,7 +174,7 @@ const resolvers = {
     
             return { id: result.id }
         },
-        editPost: async (parent: any, { pid, input}: any, { db, session} : any) => {
+        editPost: async (parent: any, { pid, input}: any, { db, session} : TContext) => {
 
             const doc = db.collection('posts').doc(pid)
             const docData= await doc.get().then((doc:any)=>doc.data())
@@ -168,7 +188,7 @@ const resolvers = {
             .then(() => ({id: pid}))
 
         },
-        addComment: async (parent: any, args: any, { db, session} : any) => {
+        addComment: async (parent: any, args: any, { db, session} : TContext) => {
             const collection = db.collection('comments');
             const result=await collection.add({
                 uid: session.uid,
@@ -179,15 +199,20 @@ const resolvers = {
     
             return { id: result.id }
         },
-        deleteComment: async (parent: any, args: any, { db, session} : any) => {
+        deleteComment: async (parent: any, args: any, { db, session} : TContext) => {
             return await db.collection("comments")
             .doc(args.commentId)
-            .where("uid", "==", session.uid)
             .get()
-            .then((querySnapshot: any) => querySnapshot?.docs[0]?.delete())
-            .then(() => true)
+            .then((querySnapshot: any) => {
+                let doc=querySnapshot?.docs[0]
+
+                if(doc.uid!==session.uid) return false
+
+                doc.delete()
+                return true
+            })
         },
-        editUser : async (parent: any, args: any, { db, session } : any) => {
+        editUser : async (parent: any, args: any, { db, session, auth } : TContext) => {
                 const isAvailable= await checkUsername(parent, args, { db, session })
                 console.log("isAvailable", isAvailable)
 
@@ -201,8 +226,7 @@ const resolvers = {
                     uid: session.uid
                 })
 
-                await admin
-                .auth()
+                await auth
                 .setCustomUserClaims(session.uid, { 
                     username: args.input.username,
                     name: args.input.name                
@@ -217,7 +241,7 @@ const resolvers = {
                     ...args.input
                 }
         },
-        toggleLike: async (parent: any, args: any, { db, session } : any) => {
+        toggleLike: async (parent: any, args: any, { db, session } : TContext) => {
 
             return db.collection('likes')
             .where('uid','==',session.uid)
@@ -239,7 +263,7 @@ const resolvers = {
 
 
         },
-        toggleSave: async (parent: any, args: any, { db, session } : any) => {
+        toggleSave: async (parent: any, args: any, { db, session } : TContext) => {
             return db.collection('saves')
             .where('uid','==',session.uid)
             .where('pid','==',args.pid)
@@ -258,15 +282,15 @@ const resolvers = {
             })
 
         },
-        toggleFollow: async (parent: any, args: any, { db, session } : any) => {
+        toggleFollow: async (parent: any, args: any, { db, session } : TContext) => {
             return db.collection('follows')
             .where('uid','==',session.uid)
-            .where('pid','==',args.pid)
+            .where('to_uid','==',args.to_uid)
             .get()
             .then((QuerySnapshot : any) => {
                 if(QuerySnapshot.empty){
                     db.collection('follows').add({
-                        pid: args.pid,
+                        to_uid: args.to_uid,
                         uid: session.uid
                     })
                     return true
@@ -279,10 +303,9 @@ const resolvers = {
         },
     },
     Post : {
-        user : async (parent: any, args: any, {db, admin} : any) => {
+        user : async (parent: any, args: any, {db, auth} : TContext) => {
             
-            return admin
-            .auth()
+            return auth
             .getUser(parent.uid)
             .then((userRecord: any) => (
                 // console.log('userRecord',userRecord),
@@ -291,7 +314,7 @@ const resolvers = {
             .catch((error: any) => console.log('res.POST.user',error ));
     
         },
-        like : async (parent: any, args: any, context : any) =>  {
+        like : async (parent: any, args: any, context : TContext) =>  {
             const session = context.session
             if(!session) return null
 
@@ -303,7 +326,7 @@ const resolvers = {
 
             return !QuerySnapshot.empty
         },
-        save : async (parent: any, args: any, context : any) =>  {
+        save : async (parent: any, args: any, context : TContext) =>  {
             const session = context.session
             if(!session) return null
 
@@ -315,12 +338,12 @@ const resolvers = {
 
             return !QuerySnapshot.empty
         },
-        likes : async (parent: any, args: any, context : any) =>  null,
-        saves : async (parent: any, args: any, context : any) =>  null,
+        likes : async (parent: any, args: any, context : TContext) =>  null,
+        saves : async (parent: any, args: any, context : TContext) =>  null,
 
     },
     User : {
-        posts : async (parent: any, args: any, {db, admin} : any) => {
+        posts : async (parent: any, args: any, {db} : TContext) => {
             const snapshot = await db.collection('posts')
             .where('uid','==',parent.uid)
             .where('published','==',true).get()
@@ -343,7 +366,7 @@ const resolvers = {
         } 
     },
     Me : {
-        posts : async (parent: any, args: any, {db} : any) => {
+        posts : async (parent: any, args: any, {db} : TContext) => {
             let postsRef = db.collection('posts')
             let snapshot = await postsRef
             // .where('published','==',true)
@@ -369,7 +392,8 @@ const resolvers = {
     
             return data
         },
-        savedPosts : async (parent: any, args: any, {db} : any) => {
+        savedPosts : async (parent: any, args: any, {db} : TContext) => {
+
             let postsRef = db.collection('saves')
             let snapshot = await postsRef
             // .where('published','==',true)
@@ -395,10 +419,9 @@ const resolvers = {
         }
     },
     Comment : {
-        user : async (parent: any, args: any, {db, admin} : any) => {
+        user : async (parent: any, args: any, {db, auth} : TContext) => {
             
-            return admin
-            .auth()
+            return auth
             .getUser(parent.uid)
             .then((userRecord: any) => (
                 // console.log('userRecord',userRecord),
@@ -411,7 +434,19 @@ const resolvers = {
 };
 
 
-    
+function createTags({ db, tags } : {
+    db: any,
+    tags: string[]
+}){
+    tags.forEach(tag=>{
+        // db.collection('tags').
+    })
+}
+
+function deleteTags({ db, tags } : any){
+
+}
+
 const checkUsername = async (parent: any, args: any, { db, session } : any) =>  {
     const doc = await db.collection('users').doc(args.input.username).get()
     

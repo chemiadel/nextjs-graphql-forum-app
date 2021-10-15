@@ -3,7 +3,7 @@ import { ApolloServer, makeExecutableSchema } from 'apollo-server-micro';
 import { permissions, typeDefs, resolvers} from 'lib/graphql'
 import admin from 'lib/firebase/init-admin'
 import { authServer } from 'lib/hooks/authServer';
-const { applyMiddleware } = require('graphql-middleware')
+import { applyMiddleware } from 'graphql-middleware'
 
 
 const schema = applyMiddleware(
@@ -19,8 +19,9 @@ const server = new ApolloServer({
   context: async (ctx : any) => {
     const session = await authServer(ctx)
     const db = admin.firestore()
-    return {db, session, admin}
-  } 
+    const auth = admin.auth()
+    return {session, db, auth}
+  },
 });
 
 export const  config  =  {

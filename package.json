@@ -31,8 +31,10 @@
     "react-hook-form": "^7.16.0",
     "react-markdown": "^7.0.1",
     "react-simplemde-editor": "^5.0.1",
+    "rich-markdown-editor": "^11.18.9",
     "sass": "^1.42.1",
     "slug": "^5.1.0",
+    "styled-components": "^5.3.1",
     "swr": "^1.0.1"
   },
   "devDependencies": {

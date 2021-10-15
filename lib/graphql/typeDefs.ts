@@ -84,15 +84,15 @@ export const typeDefs =gql`
         user: User
       }
 
-
 #QUERY
       type Query {
         Me : Me
-        Posts (page: Int, tags: String) : [Post]
+        Posts (page: Int) : [Post]
         Comments ( pid: String! ) : [Comment]
         Post (nid: String!, slug:String!) : Post
         User (username: String!): User
         checkUsername ( username: String! ): Boolean
+        TopTags : [String]
 
         Like ( pid: String! ): Boolean
         Save ( pid: String! ): Boolean

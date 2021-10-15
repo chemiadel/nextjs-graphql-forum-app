@@ -97,7 +97,7 @@ const Home: NextPage = ({data : {Post: data}} : any) => {
               {`# ${tag}`}</button>
             )}
           </div>
-          <div className="unreset md">
+          <div className="unreset">
           {/* <ReactMarkdown source={data.content.data} /> */}
           {data.content.data}
           </div>

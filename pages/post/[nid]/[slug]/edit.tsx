@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { useAuth } from 'lib/hooks/useAuthContext'
 import dynamic from 'next/dynamic'
 const MDEditor = dynamic(() => import('components/editor'),{ssr:false})
+const Outline = dynamic(() => import('components/outline'),{ssr:false})
 import fetcher from 'lib/fetcher'
 import { useRouter } from 'next/router'
 import { useForm, Controller } from 'react-hook-form'
@@ -78,7 +79,10 @@ const EditPost: CustomNextPage = () => {
             defaultValue={data.Post.content.data}
             name="content"
             render={({ field: { onChange, onBlur, value, ref } }) => (
-              <MDEditor defaultValue={value} onChange={onChange} />
+              // <MDEditor defaultValue={value} onChange={onChange} />
+              <div className="unreset">
+                  <Outline defaultValue={value} onChange={onChange} />
+              </div>
             )}
           />
         

@@ -2,6 +2,7 @@ import type { CustomNextPage, FormValues } from 'lib/types'
 import Head from 'next/head'
 import dynamic from 'next/dynamic'
 const MDEditor = dynamic(() => import('components/editor'),{ssr:false})
+const Outline = dynamic(() => import('components/outline'),{ssr:false})
 import fetcher from 'lib/fetcher'
 import { useRouter } from 'next/router'
 import { useForm, Controller } from 'react-hook-form'
@@ -12,6 +13,8 @@ const CreatePost: CustomNextPage = () => {
   const router=useRouter()
 
   function onSubmit({ title, tags, published, content} : FormValues){
+    console.log({content})
+    // return
     let payload={ 
       title,tags,published,
       content:{
@@ -52,13 +55,26 @@ const CreatePost: CustomNextPage = () => {
         </div>
         <input {...register("title")} placeholder="Title" className="w-full  bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"/>
         <input {...register("tags")} placeholder="Tags e.g. (cakes, arcs) " className="w-full  bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"/>
-        <Controller
+        <div className="border  px-10 p-2 unreset">
+            <Controller
+                control={control}
+                name="content"
+                render={({ field: { onChange, onBlur, value, ref } }) => (
+                  <div className="unreset">
+                      <Outline onChange={onChange} />
+                  </div>
+                )}
+            />
+        {/* <Outline /> */}
+        </div>
+        
+        {/* <Controller
             control={control}
             name="content"
             render={({ field: { onChange, onBlur, value, ref } }) => (
               <MDEditor value={value} onChange={onChange} />
             )}
-          />
+          /> */}
         
         </div>
       </form>
