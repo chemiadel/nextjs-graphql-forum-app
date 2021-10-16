@@ -15,7 +15,7 @@ function HOC ( {
         <div className="md:flex flex-nowrap ">
         <div className=" sm:w-full md:w-2/3">
           <section className="text-gray-600 body-font">
-          <div className="px-0 my-2">
+          <div className="px-0 my-0">
             {/* <div className="flex mx-auto flex-nowrap mb-3">
               <Link href="/" passHref>
               <a className={`cursor-pointer sm:px-6 py-3 w-1/2 sm:w-auto justify-center sm:justify-start border-b-2 title-font font-medium  inline-flex items-center leading-none ${index===0 ? "bg-gray-100 border-black text-black tracking-wider rounded-t":""}`}>

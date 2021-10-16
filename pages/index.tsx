@@ -1,41 +1,122 @@
 import type { CustomNextPage } from 'lib/types'
-import { useState } from 'react'
-import PostCard from 'components/cards/postcard'
-import useSWR from 'swr'
+import type { GetServerSideProps, GetStaticProps } from 'next'
 
-const Index : CustomNextPage = () => {
-  const { data , error } = useSWR(`query{
-    Posts{
-      id
-      uid
-      created
-      title
-      nid
-      slug
-      save
-      content {
-        type
-        data
-      }
-      user {
-        uid
-        username
-        displayName
-        photoURL
-      }
-    }
+import React, { Props, useState } from 'react'
+import PostCard from 'components/cards/postcard'
+import fetcher from '@/lib/fetcher'
+import useSWR from 'swr'
+import { useAuth } from '@/lib/hooks/useAuthContext'
+import { useRouter } from 'next/router'
+export const getStaticProps: GetStaticProps = async (context) => {
+
+  const initialData= await fetcher(`query{
+        Posts{
+          id
+          uid
+          created
+          title
+          nid
+          slug
+          save
+          content {
+            type
+            data
+          }
+          user {
+            uid
+            username
+            displayName
+            photoURL
+          }
+        }
+      }`)
+
+  console.log({initialData})
+
+  return {
+    props: {
+      initialData:initialData.Posts,
+    },
+    revalidate: 60,
+  };
+}
+
+const Index : CustomNextPage = ({initialData} : any) => {
+  const [data, setData] = useState(initialData)
+  const [index, setIndex]=useState(1)
+  const { authUser, loading } = useAuth()
+  const router =useRouter()
+  const { data : tagsData , error } = useSWR(`query {
+    TopTags 
   }`)
 
-  const [pages, setPages]=useState()
+  console.log({data})
+  
+  async function fetchNext(){
+    const { Posts } : any= await fetcher(`query{
+      Posts ( page: ${index} ) {
+        id
+        uid
+        created
+        title
+        nid
+        slug
+        save
+        content {
+          type
+          data
+        }
+        user {
+          uid
+          username
+          displayName
+          photoURL
+        }
+      }
+    }`)
+    if(!Posts) return null
+    setIndex(prev=> prev +1 )
+    setData([...data, ...Posts ])
+  }
 
-  if(!data) return null
   return <>
+    <div className="hidden flex flex-nowrap justify-center space-x-4 px-4 py-1  border-b border-gray-300
+    bg-white
+    ">
+    {tagsData?.TopTags?.map((tag: string) => 
+        <h1 key={tag} className="text-xl font-bold border-0 focus:outline-none hover:bg-gray-200 rounded">
+          {`${tag.toLocaleLowerCase()}`}
+        </h1>
+    )}
+    </div>
+    <div className="p-2 lg:px-4 lg:py-2">
+    <div className="p-2 flex flex-row border border-gray-300 rounded-md bg-white">
+      {authUser?<img
+          className="flex-grow rounded-full m-1 w-10 h-10 "
+          src= {authUser?.claims?.picture}
+          alt="Avatar"
+      />:null}
+      <div className="flex flex-row w-full">
+        <input
+          onClick={()=>{
+            router.push(authUser?'/post/create':'/login')
+          }}
+          id="default"
+          type="text"
+          name="default"
+          placeholder="Create post"
+          className="flex-grow mx-2 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-200"
+        />
+      </div>
+
+    </div>
+    </div>
     {/* Initial data */}
-    {data?.Posts?.map( (post : any) => <PostCard key={post.id} data={post}/> )}
+    {data?.map( (post : any) => <PostCard key={post.id} data={post}/> )}
     {/* Loaded data */}
-    
-    {data?.Posts?.length%4===0 ?
+    {data?.length%4===0 ?
     <button 
+    onClick={fetchNext}
     className="mx-auto text-black text-md font-semibold hover:underline w-full m-2 "> 
     Load more </button>
     :null}
