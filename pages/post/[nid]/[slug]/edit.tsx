@@ -1,8 +1,6 @@
 import type { CustomNextPage, FormValues } from 'lib/types'
 import Head from 'next/head'
-import { useAuth } from 'lib/hooks/useAuthContext'
 import dynamic from 'next/dynamic'
-const MDEditor = dynamic(() => import('components/editor'),{ssr:false})
 const Outline = dynamic(() => import('components/outline'),{ssr:false})
 import fetcher from 'lib/fetcher'
 import { useRouter } from 'next/router'

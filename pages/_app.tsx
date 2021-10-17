@@ -4,7 +4,7 @@ const NextNprogress = dynamic(() => import("nextjs-progressbar"),{ssr:false})
 const Complete = dynamic(() => import('@/components/modals/completeRegistration'),{ssr:false})
 import 'lib/firebase/init'
 import 'tailwindcss/tailwind.css'
-import "easymde/dist/easymde.min.css";
+import 'styles/unreset.scss'
 
 import Layout from 'components/_layout'
 import SubLayouts from 'components/_subLayout'

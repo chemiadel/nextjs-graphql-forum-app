@@ -2,14 +2,17 @@
 import type { NextPage, GetServerSideProps } from 'next'
 import fetcher from 'lib/fetcher'
 import Link from 'next/link'
-import ReactMarkdown from "react-markdown";
+// import ReactMarkdown from "react-markdown";
 
 import Like from 'components/buttons/like'
 import Save from 'components/buttons/save'
 import Comment from 'components/cards/comments'
 import timeago from 'lib/timeago'
+import { serialize } from 'next-mdx-remote/serialize'
+import { MDXRemote } from 'next-mdx-remote'
 
 import { ParsedUrlQuery } from 'querystring';
+import { useEffect } from 'react';
 
 interface Params extends ParsedUrlQuery {
    nid: any,
@@ -43,16 +46,35 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         }
       }`, null, context.req.headers)
 
+
+      console.log(data.Post.content.data)
       return {
         props: {
-            data
+            data,
+            mdx: await serialize(data.Post.content.data)
+
         }, // will be passed to the page component as props
       }
 }
 
-const Home: NextPage = ({data : {Post: data}} : any) => {
+const Home: NextPage = ({data : {Post: data}, mdx} : any) => {
 
     console.log('props', data)
+
+    useEffect(()=>{
+      const prev=JSON.parse(localStorage.getItem('history') || `[]`)
+      
+      localStorage.setItem('history', JSON.stringify([
+          ...prev,
+          {
+            title: data.title,
+            nid: data.nid,
+            slug: data.slug,
+            author: data.user.username
+          }
+        ]))
+
+    },[])
 
     // return null
     return <div className="mx-auto w-full lg:w-3/4 ">
@@ -98,8 +120,11 @@ const Home: NextPage = ({data : {Post: data}} : any) => {
             )}
           </div>
           <div className="unreset">
-          {/* <ReactMarkdown source={data.content.data} /> */}
+          {/* <ReactMarkdown>
           {data.content.data}
+          </ReactMarkdown> */}
+          <MDXRemote {...mdx} />
+
           </div>
         {/* <p className="leading-relaxed text-base p-4 pt-6"> { data.content.data} </p> */}
 

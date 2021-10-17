@@ -7,8 +7,8 @@ export default function Tags(){
 
     if(!data) return null
   
-    return <div className="border border-gray-600 bg-white  rounded-lg m-2">
-        <h2 className="text-lg my-auto mx-2 p-4 pb-3 border-b text-gray-900 font-medium title-font">
+    return <div className="border border-gray-400 bg-white  rounded-lg m-2">
+        <h2 className="text-3xl my-auto mx-2 p-4 pb-3 border-b text-gray-900 font-bold title-font">
           Popular Tags
         </h2>
         <Row tags={data.TopTags}/>

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Head from 'next/head'
 import Tags from '../cards/toptags'
+import History from '../cards/history'
 
 function HOC ( {
   children, 
@@ -45,8 +46,8 @@ function HOC ( {
         </section>
         </div>
         <div className="hidden md:block w-1/3 space-y-6">
-            {/* <TopUsersCard /> */}
             <Tags />
+            <History />
         </div>
         </div>
       </main>

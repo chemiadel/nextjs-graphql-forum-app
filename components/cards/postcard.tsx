@@ -9,7 +9,7 @@ export default function PostCard({data} : any){
     
     return <div className="w-full ">
     <div className="p-2 pt-0 lg:pt-0 lg:p-4">
-      <div className="border border-gray-300 hover:border-gray-500 py-4 px-4 md:p-6 rounded-lg bg-white">
+      <div className="border border-gray-300 hover:border-gray-400 py-4 px-4 md:p-6 rounded-lg bg-white">
  
         <div className="flex flex-row content-center border-gray-200">
         <div className="flex-grow flex-col">
@@ -25,7 +25,7 @@ export default function PostCard({data} : any){
               <span>{timeago.ago(new Date(data.created._seconds * 1000))}</span>
               <span className="font-medium">
                   <Link href={`/user/${data.user.username}`}>
-                    { `- ${data.user.displayName}` }
+                    { `- ${data.user.username}` }
                   </Link>
               </span>
             </h2>

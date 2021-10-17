@@ -1,7 +1,7 @@
 import type { CustomNextPage } from 'lib/types'
-import type { GetServerSideProps, GetStaticProps } from 'next'
+import type { GetStaticProps } from 'next'
 
-import React, { Props, useState } from 'react'
+import React, { useState } from 'react'
 import PostCard from 'components/cards/postcard'
 import fetcher from '@/lib/fetcher'
 import useSWR from 'swr'
@@ -91,11 +91,11 @@ const Index : CustomNextPage = ({initialData} : any) => {
     </div>
     <div className="p-2 lg:px-4 lg:py-2">
     <div className="p-2 flex flex-row border border-gray-300 rounded-md bg-white">
-      {authUser?<img
+      <img
           className="flex-grow rounded-full m-1 w-10 h-10 "
-          src= {authUser?.claims?.picture}
+          src= {authUser?.claims?.picture || 'https://api-private.atlassian.com/users/850ae4c9bf8ca767eb65b41f527f5e3b/avatar'}
           alt="Avatar"
-      />:null}
+      />
       <div className="flex flex-row w-full">
         <input
           onClick={()=>{
