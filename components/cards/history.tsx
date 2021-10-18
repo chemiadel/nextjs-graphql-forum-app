@@ -18,7 +18,7 @@ export default function History(){
 
   
     return <div className="py-2 border border-gray-400 bg-white  rounded-lg m-2">
-        <h2 className="text-3xl my-auto mx-2 p-2 pb-3 border-b text-gray-900 font-bold title-font">
+        <h2 className="text-2xl my-auto mx-2 p-2 pb-3 border-b text-gray-900 font-bold title-font">
           Last visited
         </h2>
         <div className="divide-y divide-gray-100 space-y-2">

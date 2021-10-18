@@ -24,14 +24,16 @@ export default function  AuthContextProvider({children} : Props) {
 
   
   function setUser(user : any){
-    user.getIdToken().then(( token : string )=> setCookie(null, 'idToken', token) )
+    user.getIdToken().then(( token : string )=> setCookie(null, 'idToken', token, {
+      maxAge: (new Date().getTime()) + (365 * 24 * 60 * 60)
+    }) )
     user.getIdTokenResult().then( (data : any) => setAuthUser(data))   
   }
 
   useEffect(()=>{
         firebase.auth().onAuthStateChanged((user : any) => {
           if (user) setUser(user)  
-          if (!user) (setAuthUser(null), destroyCookie(null, 'idToken'))
+          if (!user) (setAuthUser(null), destroyCookie(null, 'idToken',))
           
           setLoading(false)
         

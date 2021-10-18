@@ -13,6 +13,7 @@ import { MDXRemote } from 'next-mdx-remote'
 
 import { ParsedUrlQuery } from 'querystring';
 import { useEffect } from 'react';
+import {parseCookies} from 'nookies'
 
 interface Params extends ParsedUrlQuery {
    nid: any,
@@ -22,6 +23,9 @@ interface Params extends ParsedUrlQuery {
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const {nid, slug}=context.params as Params
     
+    const {idToken} = parseCookies(context);
+    console.log({idToken})
+
     const data=await fetcher(`query{
         Post (nid:"${nid}", slug: "${slug}"){
           id
