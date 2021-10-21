@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/marked": "^3.0.2",
     "apollo-server": "^3.3.0",
     "apollo-server-micro": "^2.3.3",
     "firebase": "^8.9.1",
@@ -20,6 +21,7 @@
     "graphql-tools": "^8.2.0",
     "joi": "^17.4.2",
     "lint": "^0.7.0",
+    "marked": "^3.0.7",
     "micro": "^9.3.4",
     "nanoid": "^3.1.28",
     "next": "11.1.2",

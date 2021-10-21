@@ -2,6 +2,7 @@
 import type { NextPage, GetServerSideProps } from 'next'
 import fetcher from 'lib/fetcher'
 import Link from 'next/link'
+import marked from 'marked'
 // import ReactMarkdown from "react-markdown";
 
 import Like from 'components/buttons/like'
@@ -55,13 +56,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       return {
         props: {
             data,
-            // mdx: await serialize(data.Post.content.data)
+            marked: marked(data.Post.content.data)
 
         }, // will be passed to the page component as props
       }
 }
 
-const Home: NextPage = ({data : {Post: data}, mdx} : any) => {
+const Home: NextPage = ({data : {Post: data}, marked} : any) => {
 
     console.log('props', data)
 
@@ -80,6 +81,7 @@ const Home: NextPage = ({data : {Post: data}, mdx} : any) => {
 
     },[])
 
+    console.log('marked',{marked})
     // return null
     return <div className="mx-auto w-full lg:w-3/4 ">
     <div className="p-2 lg:pt-0 lg:p-4">
@@ -123,8 +125,10 @@ const Home: NextPage = ({data : {Post: data}, mdx} : any) => {
               {`# ${tag}`}</button>
             )}
           </div>
-          <div className="unreset">
-          {data.content.data}
+          <div className="unreset github-md">
+          <div dangerouslySetInnerHTML={{__html: marked}}></div>
+
+          {/* {data.content.data} */}
           {/* <ReactMarkdown>
           {data.content.data}
           </ReactMarkdown> */}

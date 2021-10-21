@@ -5,6 +5,7 @@ const Complete = dynamic(() => import('@/components/modals/completeRegistration'
 import 'lib/firebase/init'
 import 'tailwindcss/tailwind.css'
 import 'styles/unreset.scss'
+import 'styles/github-md.scss'
 
 import Layout from 'components/_layout'
 import SubLayouts from 'components/_subLayout'
