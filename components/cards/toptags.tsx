@@ -20,8 +20,8 @@ function Row({ tags } : { tags: string[]}){
 
     return <div className="p-4">
         {tags.map((tag: string) => 
-        <Link href={`/tag/${tag}`}>
-        <button key={tag} className="m-1 my-2 bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-0">
+        <Link key={tag} href={`/tag/${tag}`}>
+        <button className="m-1 my-2 bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-0">
           {`#${tag}`}
         </button>
         </Link>
