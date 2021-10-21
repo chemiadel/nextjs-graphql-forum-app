@@ -1,4 +1,5 @@
 import useSWR from 'swr'
+import Link from 'next/link'
 
 export default function Tags(){
   const { data , error } = useSWR(`query {
@@ -19,8 +20,10 @@ function Row({ tags } : { tags: string[]}){
 
     return <div className="p-4">
         {tags.map((tag: string) => 
+        <Link href={`/tag/${tag}`}>
         <button key={tag} className="m-1 my-2 bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-0">
           {`#${tag}`}
         </button>
+        </Link>
 )} </div>
 }

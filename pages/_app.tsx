@@ -14,7 +14,7 @@ import AuthProvider from 'lib/hooks/useAuthContext'
 import { SWRConfig } from 'swr'
 import fetcher from 'lib/fetcher'
 
-import Redirect from 'components/helpers/redirect'
+import Redirect from '@/lib/helpers/redirect'
 
 function MyApp({ Component, pageProps }: {
   Component: CustomNextComponent,

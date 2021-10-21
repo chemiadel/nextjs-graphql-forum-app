@@ -5,6 +5,7 @@ import Button from '../buttons/solid'
 import fetcher from '../../lib/fetcher'
 import useSWR from 'swr'
 import { useAuth } from '../../lib/hooks/useAuthContext'
+import marked from 'marked'
 
 export default function Comment({pid} : {pid:string}){
     const [comment, setComment]=useState('')
@@ -83,9 +84,9 @@ export default function Comment({pid} : {pid:string}){
             </div>
             {authUser?.claims?.user_id===item.uid && <button onClick={()=>deleteComment(item.id)}>Delete</button>}
         </div>
-        <p className="text-lg">
-            {item.comment}
-        </p>
+        <div className="unreset github-md">
+          <div dangerouslySetInnerHTML={{__html: marked(item.comment)}}></div>
+        </div>
         </div>)}
     </div>
 }

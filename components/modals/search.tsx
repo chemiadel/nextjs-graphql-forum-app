@@ -1,18 +1,32 @@
-import { useEffect, useState, useRef } from "react";
-import { useAuth } from "../../lib/hooks/useAuthContext"
-import { useForm } from "react-hook-form";
+import React, { useEffect, useState, useRef } from "react";
+import Link from 'next/link'
 import "firebase/auth"
+import fetcher from "@/lib/fetcher";
 
-export default function Modal( {
-  state,
-  close
-}: {
-  state?: boolean,
-  close?: () => void
-}){
+export default function Modal(){
     const [ toggle, setToggle ] = useState(false)
+    const [ search, setSearch] = useState('')
+    const [ results, setResults] = useState([])
+
     const wrapperRef = useRef(null);
     useOutsideAlerter(wrapperRef, setToggle);
+
+    function onChange(event: React.FormEvent<HTMLInputElement>){
+        const queryText=event.currentTarget.value
+        setSearch(queryText)
+
+        if(!queryText) return null
+        
+        fetcher(`query {
+          Search(queryText: "${queryText}"){
+            id
+            title
+            nid
+            slug
+          }
+        }`)
+        .then(data=> setResults(data.Search))
+    }
 
     return <>
         <button onClick={()=>setToggle(true)} className="px-4 py-2 rounded-md text-sm font-medium focus:outline-none focus:ring transition text-gray-600 border-gray-600 hover:bg-gray-200 active:bg-gray-700 focus:ring-gray-300" type="submit">
@@ -24,7 +38,7 @@ export default function Modal( {
     {toggle?
     <div className="bg-opacity-10	 flex items-center justify-center fixed top-0 left-0 bottom-0 w-full h-full bg-gray-800">
     
-    <div className="bg-white h-2/3 rounded-lg w-3/4 md:w-2/3 lg:w-1/3">
+    <div  ref={wrapperRef} className="bg-white h-2/3 rounded-lg w-3/4 md:w-2/3 lg:w-1/3">
 
         <div className="flex flex-col items-start p-4">
         <form className="w-full">
@@ -34,23 +48,29 @@ export default function Modal( {
         <div className="mb-2 text-gray-900 font-bold text-xl">Search</div>
         </div>
         <div className="p-2 w-full">
-          <div  ref={wrapperRef} className="relative space-y-2">
+          <div   className="relative space-y-2">
             <input 
             placeholder="Type something"
             required
             autoFocus
+            autoComplete='off'
             type="text" 
             id="search" 
             name="search" 
-            onSubmit={close}
+            value={search}
+            onChange={onChange}
             className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"/>
           </div>
         </div>
-        {/* <div className="pt-3 mt-3 border-t ml-auto flex flex-row-reverse">
-            <button className=" bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-            Seearch
-            </button>
-        </div> */}
+        <div className="p-2 border-t space-y-4">
+          {results.map((item:any, key:number)=> 
+              <div key={item.id} >
+              <Link href={`/post/${item.nid}/${item.slug}`}>              
+                <a className=" cursor-pointer hover:underline text-gray-800 font-medium title-font" key={item.id}> {item?.title || ''} </a>
+              </Link>
+              </div>
+          )}
+        </div>
         </form>
 
         </div>

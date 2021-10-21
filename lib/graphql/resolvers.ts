@@ -27,6 +27,30 @@ const resolvers = {
                         })  
             
         },
+        PostsByTag: (parent: any, {tag, page}: {tag: string, page: number}, {db} : TContext) => {
+            return db.collection('posts')
+            .orderBy("created","desc")
+            .where('tags', 'array-contains', tag)
+            .offset((page || 0) * 4)
+            .limit(4)
+            .get()
+            .then( (snapshot : admin.firestore.QuerySnapshot ) => {
+                return snapshot
+                .docs
+                .map((doc : admin.firestore.DocumentSnapshot)=> ({id: doc.id, ...doc.data() }))
+            }) 
+        },
+        Search: (parent: any, {queryText}: {queryText:string}, {db} : TContext) => {
+            return db.collection('posts')
+            .where('slug', '>=', queryText).where('slug', '<=', queryText+ '\uf8ff')
+            .limit(5)
+            .get()
+            .then( (snapshot : admin.firestore.QuerySnapshot ) => {
+                return snapshot
+                .docs
+                .map((doc : admin.firestore.DocumentSnapshot)=> ({id: doc.id, ...doc.data() }))
+            }) 
+        },
         Comments : async (parent: any, args: any, {db} : TContext) => {
             let postsRef = db.collection('comments')
             let snapshot = await postsRef
@@ -165,7 +189,7 @@ const resolvers = {
             const collection = db.collection('posts');
             const result=await collection.add({
                 ...input,
-                tags: input?.tags?.split(",").map((tag : string) =>slug(tag)) || [],
+                tags: input?.tags?.split(",").filter((word:string) => word.trim().length > 0).map((tag : string) =>slug(tag)) || [],
                 created: new Date(),
                 nid: nanoid(),
                 slug: slug(input.title),
@@ -183,7 +207,7 @@ const resolvers = {
 
             return await doc.set({
                 ...input,
-                tags: input?.tags?.split(",").map((tag : string) =>slug(tag)) || [],
+                tags: input?.tags?.split(",").filter((word:string) => word.trim().length > 0).map((tag : string) =>slug(tag)) || [],
             }, { merge: true })
             .then(() => ({id: pid}))
 
@@ -432,20 +456,6 @@ const resolvers = {
         },
     }
 };
-
-
-function createTags({ db, tags } : {
-    db: any,
-    tags: string[]
-}){
-    tags.forEach(tag=>{
-        // db.collection('tags').
-    })
-}
-
-function deleteTags({ db, tags } : any){
-
-}
 
 const checkUsername = async (parent: any, args: any, { db, session } : any) =>  {
     const doc = await db.collection('users').doc(args.input.username).get()
