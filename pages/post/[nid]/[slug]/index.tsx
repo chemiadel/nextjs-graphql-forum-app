@@ -8,8 +8,8 @@ import Like from 'components/buttons/like'
 import Save from 'components/buttons/save'
 import Comment from 'components/cards/comments'
 import timeago from 'lib/timeago'
-import { serialize } from 'next-mdx-remote/serialize'
-import { MDXRemote } from 'next-mdx-remote'
+// import { serialize } from 'next-mdx-remote/serialize'
+// import { MDXRemote } from 'next-mdx-remote'
 
 import { ParsedUrlQuery } from 'querystring';
 import { useEffect } from 'react';
@@ -55,7 +55,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       return {
         props: {
             data,
-            mdx: await serialize(data.Post.content.data)
+            // mdx: await serialize(data.Post.content.data)
 
         }, // will be passed to the page component as props
       }
@@ -124,10 +124,11 @@ const Home: NextPage = ({data : {Post: data}, mdx} : any) => {
             )}
           </div>
           <div className="unreset">
+          {data.content.data}
           {/* <ReactMarkdown>
           {data.content.data}
           </ReactMarkdown> */}
-          <MDXRemote {...mdx} />
+          {/* <MDXRemote {...mdx} /> */}
 
           </div>
         {/* <p className="leading-relaxed text-base p-4 pt-6"> { data.content.data} </p> */}
