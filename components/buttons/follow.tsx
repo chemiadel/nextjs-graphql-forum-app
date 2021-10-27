@@ -1,9 +1,12 @@
 import {useState, useEffect} from 'react'
 import fetcher from '../../lib/fetcher'
+import { useAuth } from 'lib/hooks/useAuthContext'
+import { useRouter } from 'next/router'
 
 const Love = ({to_uid} : {to_uid: string}) => {
     const [value, setValue]=useState(false)
-    // var pid="bWKEyGZQCYFgqFhXyZUy"
+    const { authUser, loading} = useAuth()
+    const router=useRouter()
 
     useEffect(()=>{
         fetcher(`query {
@@ -13,9 +16,13 @@ const Love = ({to_uid} : {to_uid: string}) => {
 
 
     function toggleFollow(){
-        fetcher(`mutation {
-            toggleFollow (to_uid: "${to_uid}")
-          }`).then(data=>setValue(data.toggleFollow))
+        if(!authUser) {
+            router.push('/login')
+        } else {
+            fetcher(`mutation {
+                toggleFollow (to_uid: "${to_uid}")
+            }`).then(data=>setValue(data.toggleFollow))
+        }
     }
 
     return <button 
