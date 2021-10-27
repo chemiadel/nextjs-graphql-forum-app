@@ -17,6 +17,7 @@ export default function History(){
     },[])
 
     if(data?.length===0) return null
+    
     return <div className="py-2 border border-gray-400 bg-white  rounded-lg m-2">
         <h2 className="text-2xl my-auto mx-2 p-2 pb-3 border-b text-gray-900 font-bold title-font">
           Last visited
