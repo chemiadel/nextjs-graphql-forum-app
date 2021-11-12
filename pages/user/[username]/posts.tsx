@@ -19,6 +19,8 @@ const Home: NextPage = () => {
         id
         uid
         created
+        nid
+        slug
         title
         like
         save

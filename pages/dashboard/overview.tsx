@@ -19,6 +19,7 @@ const Overview : CustomNextPage = () => {
   console.log({data})
   if(!data) return null
   return  <section className="text-gray-600 body-font">
+            <title>Dashboard - Overview</title>
           <div className="container w-1/2 px-5 py-14 mx-auto">
               <div className="flex flex-wrap -m-4 text-center">
               <div className="p-4 w-1/2">

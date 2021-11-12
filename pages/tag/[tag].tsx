@@ -49,6 +49,7 @@ const Tag : CustomNextPage = () => {
   }
 
   return <>
+    <title>{`Tag [${query.tag}]`}</title>
     <div className="p-2 lg:px-4 lg:py-2">
     <h1 className="p-2 text-4xl font-bold">{`Tag [#${query.tag}]`}</h1>
     </div>
@@ -60,7 +61,8 @@ const Tag : CustomNextPage = () => {
     onClick={fetchNext}
     className="mx-auto text-black text-md font-semibold hover:underline w-full m-2"> 
     Load more </button>
-    :<h1 className="my-10 text-center text-xl ">No results</h1>}
+    :null}
+    {data.length===0?<h1 className="my-32 text-center text-4xl ">No results</h1>:null}
     </>
 }
 

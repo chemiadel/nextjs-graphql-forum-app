@@ -45,7 +45,8 @@ export default Posts
 
 function Post({data} : any){
   return <div className="w-full ">
-  <div className="p-2 pt-0 lg:pt-0 lg:p-4">
+            <title>Dashboard - Posts</title>
+<div className="p-2 pt-0 lg:pt-0 lg:p-4">
     <div className="border border-gray-300 hover:border-gray-600 py-4 px-4 md:p-6 rounded-lg bg-white">
 
       <div className="flex flex-row content-center border-gray-200">

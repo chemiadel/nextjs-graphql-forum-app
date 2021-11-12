@@ -67,7 +67,7 @@ const Home: privateNextPage = () => {
   return (
     <>
       <Head>
-        <title>NextCommunity | Login</title>
+        <title>Login</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="w-11/12 md:w-1/2 lg:w-2/6 h-full   

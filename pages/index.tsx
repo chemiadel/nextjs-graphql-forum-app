@@ -80,6 +80,7 @@ const Index : CustomNextPage = ({initialData} : any) => {
   }
 
   return <>
+    <title>NextCommunity</title>
     <div className="hidden flex flex-nowrap justify-center space-x-4 px-4 py-1  border-b border-gray-300
     bg-white
     ">

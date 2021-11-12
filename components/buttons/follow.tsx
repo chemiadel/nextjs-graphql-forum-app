@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react'
-import fetcher from '../../lib/fetcher'
+import fetcher from 'lib/fetcher'
 import { useAuth } from 'lib/hooks/useAuthContext'
 import { useRouter } from 'next/router'
 

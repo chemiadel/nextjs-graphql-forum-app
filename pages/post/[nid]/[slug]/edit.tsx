@@ -54,7 +54,7 @@ const EditPost: CustomNextPage = () => {
   return (
     <>
       <Head>
-        <title>Create Post</title>
+        <title>Edit Post</title>
       </Head>
 
       <form className="mx-auto my-4 w-full lg:w-3/4"  onSubmit={handleSubmit(onSubmit)}>

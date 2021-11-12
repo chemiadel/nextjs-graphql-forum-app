@@ -1,5 +1,3 @@
-import Link from 'next/link'
-import Head from 'next/head'
 import Tags from '../cards/toptags'
 import History from '../cards/history'
 

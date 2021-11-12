@@ -84,6 +84,8 @@ const Home: NextPage = ({data : {Post: data}, marked} : any) => {
     console.log('marked',{marked})
     // return null
     return <div className="mx-auto w-full lg:w-3/4 ">
+          <title>{`${ data.title}`}</title>
+
     <div className="p-2 lg:pt-0 lg:p-4">
       <div className="border border-gray-300 p-6 rounded-lg bg-white">
  
@@ -104,7 +106,9 @@ const Home: NextPage = ({data : {Post: data}, marked} : any) => {
             </h2>
         </div>
         <div>
-        <button className={
+        <button 
+        onClick={()=>(navigator.clipboard.writeText(window.location.toString()),alert('Copied!'))}
+        className={
           `inline-flex items-center mx-1 p-1 h-10 w-10 rounded-full text-base
           bg-gray-50
           border border-gray-300
@@ -117,26 +121,21 @@ const Home: NextPage = ({data : {Post: data}, marked} : any) => {
         <Save pid={data.id} init={data.save}/>
         <Like pid={data.id} init={data.like} />
         </div>
-          <h2 className="text-lg md:text-2xl lg:text-3xl text-gray-900 font-medium title-font my-6">
-            { data.title }
-          </h2>
-          <div>
-            {data.tags.map((tag:any, index:number)=><button key={`${tag}-${index}`} className="m-1 my-2 bg-gray-100 border-0 p-1 focus:outline-none hover:bg-gray-200 rounded text-sm mt-0">
-              {`# ${tag}`}</button>
-            )}
-          </div>
-          <div className="unreset github-md">
-          <div dangerouslySetInnerHTML={{__html: marked}}></div>
-
-          {/* {data.content.data} */}
-          {/* <ReactMarkdown>
-          {data.content.data}
-          </ReactMarkdown> */}
-          {/* <MDXRemote {...mdx} /> */}
-
-          </div>
-        {/* <p className="leading-relaxed text-base p-4 pt-6"> { data.content.data} </p> */}
-
+            <h2 className="text-lg md:text-2xl lg:text-3xl text-gray-900 font-medium title-font my-6">
+              { data.title }
+            </h2>
+            <div>
+              {data.tags.map((tag:any, index:number)=>
+              <Link key={tag} href={`/tag/${tag}`}>
+              <button className="m-1 my-2 bg-gray-100 border-0 p-1 focus:outline-none hover:bg-gray-200 rounded text-sm mt-0">
+                {`# ${tag}`}
+              </button>
+              </Link>
+              )}
+            </div>
+            <div className="unreset github-md">
+                <div dangerouslySetInnerHTML={{__html: marked}} />
+            </div>
       </div>
       <Comment pid={data.id}/>
 

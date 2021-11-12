@@ -35,6 +35,8 @@ const Saved : CustomNextPage = () => {
   if(!data) return null
 
   return <>
+              <title>Dashboard - Saved</title>
+
         {data?.Me?.savedPosts?.map( (post : any) => <PostCard key={post.id} data={post}/> )}
     </>
 }
