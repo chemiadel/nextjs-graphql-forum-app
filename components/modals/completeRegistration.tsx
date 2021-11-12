@@ -25,7 +25,7 @@ export default function Modal(){
     
       },[watch("username")])
     
-    const onSubmit = (data : FormData) => {
+    const onSubmit = (data : any) => {
     fetcher(`mutation EditUser( $input: inputUser!) {
         editUser ( input : $input){
         uid
