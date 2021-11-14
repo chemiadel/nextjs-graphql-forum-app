@@ -19,6 +19,6 @@
       "@/lib/*": ["lib/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "lib/timeago.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "lib/timeago.js", "__tests__/index.test.js", "pages/testPage.jsx"],
   "exclude": ["node_modules"]
 }

@@ -1,7 +1,7 @@
-import type { CustomNextPage } from 'lib/types'
+import type { CustomNextPage } from '@/lib/types'
 
 import React, { useEffect, useState } from 'react'
-import PostCard from 'components/cards/postcard'
+import PostCard from '@/components/cards/postcard'
 import fetcher from '@/lib/fetcher'
 import { useAuth } from '@/lib/hooks/useAuthContext'
 import { useRouter } from 'next/router'

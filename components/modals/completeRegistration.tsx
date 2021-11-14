@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { useAuth } from "../../lib/hooks/useAuthContext"
+import { useAuth } from "@/lib/hooks/useAuthContext"
 import { useForm } from "react-hook-form";
-import fetcher from "../../lib/fetcher"
+import fetcher from "@/lib/fetcher"
 import firebase from "firebase/app";
 import "firebase/auth"
 

@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import timeago from '../../lib/timeago'
-import Like from '../buttons/like'
 import Save from '../buttons/save'
 
 export default function PostCard({data} : any){

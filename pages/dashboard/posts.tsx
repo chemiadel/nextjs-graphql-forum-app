@@ -1,8 +1,8 @@
-import type { CustomNextPage } from 'lib/types'
+import type { CustomNextPage } from '@/lib/types'
 import useSWR from 'swr'
-import SubLayout from 'components/_subLayout/dashboardL'
+import SubLayout from '@/components/_subLayout/dashboardL'
 import Link from 'next/link'
-import timeago from 'lib/timeago'
+import timeago from '@/lib/timeago'
 
 const Posts : CustomNextPage = () => {
 

@@ -1,8 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { ApolloServer, makeExecutableSchema } from 'apollo-server-micro';
-import { permissions, typeDefs, resolvers} from 'lib/graphql'
-import admin from 'lib/firebase/init-admin'
-import { authServer } from 'lib/hooks/authServer';
+import { permissions, typeDefs, resolvers} from '@/lib/graphql'
+import admin from '@/lib/firebase/init-admin'
+import { authServer } from '@/lib/hooks/authServer';
 import { applyMiddleware } from 'graphql-middleware'
 
 

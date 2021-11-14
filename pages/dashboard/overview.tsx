@@ -1,6 +1,6 @@
 import useSWR from 'swr'
-import DashboardLayout from 'components/_subLayout/dashboardL'
-import type { CustomNextPage } from 'lib/types'
+import DashboardLayout from '@/components/_subLayout/dashboardL'
+import type { CustomNextPage } from '@/lib/types'
 
 const Overview : CustomNextPage = () => {
 

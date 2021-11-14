@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import fetcher from 'lib/fetcher'
+import fetcher from '@/lib/fetcher'
 import { useAuth } from '@/lib/hooks/useAuthContext'
 import Link from 'next/link'
 

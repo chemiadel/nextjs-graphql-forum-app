@@ -1,8 +1,8 @@
-import type { CustomNextPage, FormDataAccount } from 'lib/types'
-import { useAuth } from 'lib/hooks/useAuthContext'
+import type { CustomNextPage, FormDataAccount } from '@/lib/types'
+import { useAuth } from '@/lib/hooks/useAuthContext'
 import { useForm } from "react-hook-form";
 import { useEffect } from 'react';
-import fetcher from 'lib/fetcher'
+import fetcher from '@/lib/fetcher'
 import firebase from "firebase/app";
 import "firebase/auth"
 

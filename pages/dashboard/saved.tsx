@@ -1,10 +1,10 @@
 import type { CustomNextPage } from 'lib/types'
 import useSWR from 'swr'
-import SubLayout from 'components/_subLayout/dashboardL'
-import fetcher from 'lib/fetcher'
+import SubLayout from '@/components/_subLayout/dashboardL'
+import fetcher from '@/lib/fetcher'
 import Link from 'next/link'
-import timeago from 'lib/timeago'
-import PostCard from 'components/cards/postcard'
+import timeago from '@/lib/timeago'
+import PostCard from '@/components/cards/postcard'
 
 const Saved : CustomNextPage = () => {
 

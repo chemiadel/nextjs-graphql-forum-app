@@ -1,8 +1,8 @@
-import type { CustomNextPage, FormValues } from 'lib/types'
+import type { CustomNextPage, FormValues } from '@/lib/types'
 import Head from 'next/head'
 import dynamic from 'next/dynamic'
-const Outline = dynamic(() => import('components/outline'),{ssr:false})
-import fetcher from 'lib/fetcher'
+const Outline = dynamic(() => import('@/components/outline'),{ssr:false})
+import fetcher from '@/lib/fetcher'
 import { useRouter } from 'next/router'
 import { useForm, Controller } from 'react-hook-form'
 

@@ -1,8 +1,8 @@
-import type { CustomNextPage } from 'lib/types'
+import type { CustomNextPage } from '@/lib/types'
 import type { GetStaticProps } from 'next'
 
 import React, { useState } from 'react'
-import PostCard from 'components/cards/postcard'
+import PostCard from '@/components/cards/postcard'
 import fetcher from '@/lib/fetcher'
 import useSWR from 'swr'
 import { useAuth } from '@/lib/hooks/useAuthContext'

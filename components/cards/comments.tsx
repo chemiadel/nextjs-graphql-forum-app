@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import Link from 'next/link'
-import timeago from '../../lib/timeago'
+import timeago from '@/lib/timeago'
 import Button from '../buttons/solid'
-import fetcher from '../../lib/fetcher'
+import fetcher from '@/lib/fetcher'
 import useSWR from 'swr'
-import { useAuth } from '../../lib/hooks/useAuthContext'
+import { useAuth } from '@/lib/hooks/useAuthContext'
 import marked from 'marked'
 
 export default function Comment({pid} : {pid:string}){

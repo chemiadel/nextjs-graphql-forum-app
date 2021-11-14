@@ -1,7 +1,7 @@
-import { useAuth } from 'lib/hooks/useAuthContext'
+import { useAuth } from '@/lib/hooks/useAuthContext'
 import Link from 'next/link'
-import Menu from 'components/menus/AvatarMenu'
-import Search from 'components/modals/search'
+import Menu from '@/components/menus/AvatarMenu'
+import Search from '@/components/modals/search'
 
 export default function Header(props : any){
     const { authUser } = useAuth()

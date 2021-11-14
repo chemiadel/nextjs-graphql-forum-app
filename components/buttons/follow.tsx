@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react'
-import fetcher from 'lib/fetcher'
-import { useAuth } from 'lib/hooks/useAuthContext'
+import fetcher from '@/lib/fetcher'
+import { useAuth } from '@/lib/hooks/useAuthContext'
 import { useRouter } from 'next/router'
 
 const Love = ({to_uid} : {to_uid: string}) => {

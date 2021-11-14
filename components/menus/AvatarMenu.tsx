@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react"
-import { signOut } from '../../lib/hooks/useAuthContext'
+import { signOut } from '@/lib/hooks/useAuthContext'
 import Link from 'next/link'
 
 

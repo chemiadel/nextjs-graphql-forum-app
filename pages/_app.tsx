@@ -1,4 +1,4 @@
-import type { CustomNextComponent } from 'lib/types'
+import type { CustomNextComponent } from '@/lib/types'
 import dynamic from 'next/dynamic'
 const NextNprogress = dynamic(() => import("nextjs-progressbar"),{ssr:false})
 const Complete = dynamic(() => import('@/components/modals/completeRegistration'),{ssr:false})
@@ -7,12 +7,12 @@ import 'tailwindcss/tailwind.css'
 import 'styles/unreset.scss'
 import 'styles/github-md.scss'
 
-import Layout from 'components/_layout'
-import SubLayouts from 'components/_subLayout'
-import AuthProvider from 'lib/hooks/useAuthContext'
+import Layout from '@/components/_layout'
+import SubLayouts from '@/components/_subLayout'
+import AuthProvider from '@/lib/hooks/useAuthContext'
 
 import { SWRConfig } from 'swr'
-import fetcher from 'lib/fetcher'
+import fetcher from '@/lib/fetcher'
 
 import Redirect from '@/lib/helpers/redirect'
 

@@ -1,6 +1,6 @@
-import { CustomNextPage } from 'lib/types'
+import { CustomNextPage } from '@/lib/types'
 import { useEffect } from 'react'
-import { useAuth } from 'lib/hooks/useAuthContext'
+import { useAuth } from '@/lib/hooks/useAuthContext'
 import { useRouter } from 'next/router'
 
 function Redirect({ Component, children} : 
