@@ -1,5 +1,5 @@
 import useSWR from 'swr'
-import DashboardLayout from '@/components/_subLayout/dashboardL'
+import Head from 'next/head'
 import type { CustomNextPage } from '@/lib/types'
 
 const Overview : CustomNextPage = () => {
@@ -16,10 +16,12 @@ const Overview : CustomNextPage = () => {
     }
   }`)
     
-  console.log({data})
   if(!data) return null
-  return  <section className="text-gray-600 body-font">
-            <title>Dashboard - Overview</title>
+  return  <>
+          <Head>
+            <title>Dashboard - Posts</title>
+          </Head>
+          <section className="text-gray-600 body-font">
           <div className="container w-1/2 px-5 py-14 mx-auto">
               <div className="flex flex-wrap -m-4 text-center">
               <div className="p-4 w-1/2">
@@ -34,6 +36,7 @@ const Overview : CustomNextPage = () => {
               </div>
           </div>
           </section>
+          </>
 }
 
 Overview.auth=true

@@ -1,14 +1,11 @@
 import type { CustomNextPage } from 'lib/types'
+import Head from 'next/head'
 import useSWR from 'swr'
-import SubLayout from '@/components/_subLayout/dashboardL'
-import fetcher from '@/lib/fetcher'
-import Link from 'next/link'
-import timeago from '@/lib/timeago'
 import PostCard from '@/components/cards/postcard'
 
 const Saved : CustomNextPage = () => {
 
-  const { data , error } = useSWR(`query {
+  const { data } = useSWR(`query {
     Me {
         savedPosts {
           id
@@ -35,9 +32,12 @@ const Saved : CustomNextPage = () => {
   if(!data) return null
 
   return <>
-              <title>Dashboard - Saved</title>
-
-        {data?.Me?.savedPosts?.map( (post : any) => <PostCard key={post.id} data={post}/> )}
+        <Head>
+          <title>Dashboard - Saved</title>
+        </Head>
+        <ul id="list-post" className="space-y-2 mx-2">
+          <li key={data.id}>{data.Me?.savedPosts?.map((data :any)=><PostCard data={data}/>)}</li>
+        </ul>
     </>
 }
 

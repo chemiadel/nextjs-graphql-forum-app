@@ -37,7 +37,6 @@ const EditPost: CustomNextPage = () => {
       }
     }
 
-    console.log({payload})
     // return 
     return fetcher(`mutation EditPost( $input: inputPost!) {
       editPost ( pid: "${data.Post.id}", input : $input){
@@ -50,7 +49,6 @@ const EditPost: CustomNextPage = () => {
   }
 
   if(!data) return null
-  console.log({data})
   return (
     <>
       <Head>

@@ -2,19 +2,17 @@
 import type { NextPage, GetServerSideProps } from 'next'
 import fetcher from 'lib/fetcher'
 import Link from 'next/link'
-import marked from 'marked'
-// import ReactMarkdown from "react-markdown";
+import Head from 'next/head';
 
 import Like from 'components/buttons/like'
 import Save from 'components/buttons/save'
 import Comment from 'components/cards/comments'
-import timeago from 'lib/timeago'
-// import { serialize } from 'next-mdx-remote/serialize'
-// import { MDXRemote } from 'next-mdx-remote'
 
 import { ParsedUrlQuery } from 'querystring';
 import { useEffect } from 'react';
 import {parseCookies} from 'nookies'
+import marked from 'marked'
+import timeago from 'lib/timeago'
 
 interface Params extends ParsedUrlQuery {
    nid: any,
@@ -51,8 +49,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         }
       }`, null, context.req.headers)
 
-
-      console.log(data.Post.content.data)
       return {
         props: {
             data,
@@ -63,8 +59,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 const Home: NextPage = ({data : {Post: data}, marked} : any) => {
-
-    console.log('props', data)
 
     useEffect(()=>{
       const prev=JSON.parse(localStorage.getItem('history') || `[]`)
@@ -81,11 +75,11 @@ const Home: NextPage = ({data : {Post: data}, marked} : any) => {
 
     },[])
 
-    console.log('marked',{marked})
     // return null
     return <div className="mx-auto w-full lg:w-3/4 ">
-          <title>{`${ data.title}`}</title>
-
+    <Head>
+      <title>{`${ data.title}`}</title>
+    </Head>    
     <div className="p-2 lg:pt-0 lg:p-4">
       <div className="border border-gray-300 p-6 rounded-lg bg-white">
  

@@ -8,7 +8,8 @@
     "analyze": "cross-env ANALYZE=true next build && next start",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --watch"
+    "jest": "jest --watch",
+    "cypress": "cypress open"
   },
   "dependencies": {
     "@types/marked": "^3.0.2",
@@ -46,6 +47,7 @@
     "@types/react": "17.0.20",
     "autoprefixer": "^10.3.4",
     "babel-jest": "^27.3.1",
+    "cypress": "^9.0.0",
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.2",
     "eslint-config-prettier": "^8.3.0",

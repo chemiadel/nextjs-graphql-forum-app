@@ -2,6 +2,7 @@ import type { CustomNextPage } from '@/lib/types'
 import type { GetStaticProps } from 'next'
 
 import React, { useState } from 'react'
+import Head from 'next/head'
 import PostCard from '@/components/cards/postcard'
 import fetcher from '@/lib/fetcher'
 import useSWR from 'swr'
@@ -80,7 +81,9 @@ const Index : CustomNextPage = ({initialData} : any) => {
   }
 
   return <>
-    <title>Feed</title>
+    <Head>
+      <title>Feed</title>
+    </Head>
     <div className="p-2 lg:px-4 lg:py-2">
     <div className="p-2 flex flex-row border border-gray-300 rounded-md bg-white">
       <img
@@ -104,7 +107,9 @@ const Index : CustomNextPage = ({initialData} : any) => {
     </div>
     </div>
     {/* Initial data */}
-    {data?.map( (post : any) => <PostCard key={post.id} data={post}/> )}
+    <ul id="post-list">
+        {data?.map( (post : any) => <li key={post.id}><PostCard data={post}/></li> )}
+    </ul>
     {/* Loaded data */}
     {data?.length%4===0 ?
     <button 

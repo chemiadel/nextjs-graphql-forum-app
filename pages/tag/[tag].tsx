@@ -19,8 +19,7 @@ const Tag : CustomNextPage = () => {
     }
   },[query])
 
-  console.log({query})
-  console.log({data})
+  if(!query) return null
   async function fetchNext(){
     const { PostsByTag } : any= await fetcher(`query{
       PostsByTag ( page: ${index}, tag:"${query.tag}" ) {
@@ -49,12 +48,14 @@ const Tag : CustomNextPage = () => {
   }
 
   return <>
-    <title>{`Tag [${query.tag}]`}</title>
+    <title>{`Tag [${query?.tag || ''}]`}</title>
     <div className="p-2 lg:px-4 lg:py-2">
     <h1 className="p-2 text-4xl font-bold">{`Tag [#${query.tag}]`}</h1>
     </div>
     {/* Initial data */}
-    {data?.map( (post : any) => <PostCard key={post.id} data={post}/> )}
+    <ul id="post-list">
+        {data?.map( (post : any) => <li key={post.id}><PostCard data={post}/></li> )}
+    </ul>
     {/* Loaded data */}
     {data.length!==0 && data?.length%4===0 ?
     <button 
