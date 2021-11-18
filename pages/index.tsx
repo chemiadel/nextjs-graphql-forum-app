@@ -80,16 +80,7 @@ const Index : CustomNextPage = ({initialData} : any) => {
   }
 
   return <>
-    <title>NextCommunity</title>
-    <div className="hidden flex flex-nowrap justify-center space-x-4 px-4 py-1  border-b border-gray-300
-    bg-white
-    ">
-    {tagsData?.TopTags?.map((tag: string) => 
-        <h1 key={tag} className="text-xl font-bold border-0 focus:outline-none hover:bg-gray-200 rounded">
-          {`${tag.toLocaleLowerCase()}`}
-        </h1>
-    )}
-    </div>
+    <title>Feed</title>
     <div className="p-2 lg:px-4 lg:py-2">
     <div className="p-2 flex flex-row border border-gray-300 rounded-md bg-white">
       <img

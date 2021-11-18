@@ -4,20 +4,18 @@
  * @jest-environment jsdom
  */
 
- import '@testing-library/jest-dom'
  
  import React from 'react'
  import { render, screen } from '@testing-library/react'
- import Home from '../pages/testPage'
+ import '@testing-library/jest-dom'
+ import Home from '../pages/index'
  
  describe('Home', () => {
-   it('renders a heading', () => {
+   it('renders a logo', () => {
      render(<Home />)
  
-     const heading = screen.getByRole('heading', {
-       name: /welcome to next\.js!/i,
-     })
+     const logo = screen.getByRole('img')
  
-     expect(heading).toBeInTheDocument()
+     expect(logo).toBeInTheDocument()
    })
  })
